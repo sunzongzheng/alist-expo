@@ -362,6 +362,7 @@
 					"FB_SONARKIT_ENABLED=1",
 				);
 				INFOPLIST_FILE = alist/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = AlistServer;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -395,6 +396,7 @@
 				DEVELOPMENT_TEAM = FK68V4STVV;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = alist/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = AlistServer;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
