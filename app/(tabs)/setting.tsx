@@ -1,6 +1,24 @@
-import {StyleSheet, Image, Platform, View, Text, Switch} from 'react-native';
+import {
+  StyleSheet,
+  Image,
+  Platform,
+  View,
+  Text,
+  Switch,
+  TouchableOpacity,
+  Modal,
+  Pressable,
+  Linking, Touchable, TouchableWithoutFeedback
+} from 'react-native';
+import Ionicons from "@expo/vector-icons/Ionicons";
+import {useCallback, useState} from "react";
 
 export default function Setting() {
+  const [modalVisible, setModalVisible] = useState(false);
+  const showAbout = useCallback(() => {
+    setModalVisible(true)
+  }, [setModalVisible])
+
   return (
     <View style={styles.container}>
       <Text style={styles.cardTitle}>版本信息</Text>
@@ -10,16 +28,43 @@ export default function Setting() {
           <Text>1.0</Text>
         </View>
         <View style={[styles.cardItem]}>
-          <Text>Alist版本</Text>
+          <Text>AList版本</Text>
           <Text>3.34.0</Text>
         </View>
       </View>
       <Text style={[styles.cardTitle, styles.cardMarginTop]}>关于</Text>
       <View style={[styles.card]}>
-        <View style={styles.cardItem}>
-          <Text>关于</Text>
-        </View>
+        <TouchableOpacity onPress={showAbout}>
+          <View style={styles.cardItem}>
+              <Text>关于</Text>
+              <Ionicons
+                name={'chevron-forward-outline'}
+                color={'#D1D1D6'}
+                containerStyle={{ alignSelf: 'center' }}
+                size={16}
+              />
+          </View>
+        </TouchableOpacity>
       </View>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+      >
+        <TouchableWithoutFeedback onPress={() => setModalVisible(!modalVisible)}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>本应用遵循AGPL3.0开源协议</Text>
+              <TouchableOpacity onPress={() => Linking.openURL('https://github.com/sunzongzheng/alist-expo')}>
+                <Text style={styles.modalText}>alist-expo</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => Linking.openURL('https://github.com/sunzongzheng/alist')}>
+                <Text style={styles.modalText}>alist</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
     </View>
   );
 }
@@ -74,5 +119,46 @@ const styles = StyleSheet.create({
   },
   bold: {
     fontWeight: 'bold',
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)'
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 50,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: '#F194FF',
+  },
+  buttonClose: {
+    backgroundColor: '#2196F3',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
   },
 });
