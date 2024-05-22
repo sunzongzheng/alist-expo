@@ -77,6 +77,7 @@ export default function HomeScreen() {
 
   useEffect(() => {
     return addEventListener(state => {
+      // @ts-ignore
       setIP(state.details?.ipAddress || DEFAULT_IP)
     });
   }, []);
@@ -107,7 +108,6 @@ export default function HomeScreen() {
           <Text>密码</Text>
           <View>
             <Text>{isRunning ? adminPwd : '请先启动服务'}</Text>
-            {/*<Button title={'修改'} onPress={changePassword}></Button>*/}
           </View>
         </View>
       </View>

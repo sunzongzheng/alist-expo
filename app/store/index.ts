@@ -1,13 +1,15 @@
-import {combineReducers, configureStore} from '@reduxjs/toolkit';
+import {configureStore} from '@reduxjs/toolkit';
 import log from './log';
+import {TypedUseSelectorHook, useSelector} from "react-redux";
 
-// combineReducers合并reducer
-const reducers = combineReducers({
-  log
-});
-
-export default configureStore({
+const store =  configureStore({
   reducer: {
     log
   },
 });
+
+export type RootState = ReturnType<typeof store.getState>
+
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
+
+export default store

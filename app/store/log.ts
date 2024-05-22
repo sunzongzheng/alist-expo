@@ -1,14 +1,25 @@
-import {createSlice} from '@reduxjs/toolkit';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+
+export enum LogLevel {
+  error = 2,
+  warn = 3,
+  info = 4,
+  debug = 5,
+}
+export interface LogItem {
+  level: LogLevel;
+  message: string;
+  time: number;
+}
+
+type SliceState = { logs: LogItem[] }
 
 export const logSlice = createSlice({
   name: 'log',
   initialState: {
     logs: [],
-  },
+  } satisfies SliceState as SliceState,
   reducers: {
-    setLogs(state, {payload}) {
-      state.logs = payload;
-    },
     appendLog(state, {payload}) {
       state.logs = [payload, ...state.logs];
     },
@@ -19,7 +30,6 @@ export const logSlice = createSlice({
 });
 
 export const {
-  setLogs,
   appendLog,
   clearLogs,
 } = logSlice.actions;

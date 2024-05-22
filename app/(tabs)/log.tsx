@@ -1,33 +1,29 @@
 import React, {useLayoutEffect} from 'react'
-import {FlatList, Image, Linking, StyleSheet, Text, View} from "react-native";
-import {useDispatch, useSelector} from 'react-redux';
+import {FlatList, Image, StyleSheet, Text, View} from "react-native";
+import {useDispatch} from 'react-redux';
 import dayjs from 'dayjs'
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {useNavigation} from "expo-router";
-import {clearLogs} from "@/app/store/log";
+import {clearLogs, LogLevel} from "@/app/store/log";
 import noDataImage from "@/assets/images/无服务.png";
+import {useAppSelector} from "@/app/store";
 
-enum Level {
-  error = 'error',
-  warn = 'warn',
-  info = 'info',
-  debug = 'debug',
-}
-const getLevelText = (level: number) => {
+
+const getLevelText = (level: LogLevel) => {
   return {
-    2: Level.error,
-    3: Level.warn,
-    4: Level.info,
-    5: Level.debug
+    [LogLevel.error]: 'error',
+    [LogLevel.warn]: 'warn',
+    [LogLevel.info]: 'info',
+    [LogLevel.debug]: 'debug'
   }[level]
 }
 export default function Log() {
-  const logs = useSelector(
-    state => state.log.logs,
+  const logs = useAppSelector(
+    (state) => state.log.logs,
   );
   const navigation = useNavigation()
   const dispatch = useDispatch()
-  console.log('logs', logs)
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => logs.length ? (
@@ -45,15 +41,18 @@ export default function Log() {
     <View style={styles.container}>
       <FlatList
         data={logs}
-        renderItem={({item}) => (
-          <View style={styles.item}>
-            <Text style={[styles.level, styles[getLevelText(item.level) || 'unknow']]}>{getLevelText(item.level)}</Text>
-            <View style={{flex: 1}}>
-              <Text style={styles.message}>{item.message}</Text>
-              <Text style={{color: 'gray'}}>{dayjs(item.time).format('MM-DD HH:mm:ss')}</Text>
+        renderItem={({item}) => {
+          const levelText = getLevelText(item.level)
+          return (
+            <View style={styles.item}>
+              <Text style={[styles.level, styles[levelText] || 'unknow']}>{levelText}</Text>
+              <View style={{flex: 1}}>
+                <Text style={styles.message}>{item.message}</Text>
+                <Text style={{color: 'gray'}}>{dayjs(item.time).format('MM-DD HH:mm:ss')}</Text>
+              </View>
             </View>
-          </View>
-        )}
+          )
+        }}
       />
     </View>
   ) : (
@@ -64,7 +63,7 @@ export default function Log() {
   )
 }
 
-const styles = StyleSheet.create({
+const styles:Record<string, any> = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 12,
