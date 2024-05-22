@@ -1,12 +1,11 @@
 import React, {useLayoutEffect} from 'react'
 import {FlatList, Image, StyleSheet, Text, View} from "react-native";
-import {useDispatch} from 'react-redux';
 import dayjs from 'dayjs'
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {useNavigation} from "expo-router";
 import {clearLogs, LogLevel} from "@/app/store/log";
 import noDataImage from "@/assets/images/无服务.png";
-import {useAppSelector} from "@/app/store";
+import {useAppDispatch, useAppSelector} from "@/app/store";
 
 
 const getLevelText = (level: LogLevel) => {
@@ -22,7 +21,7 @@ export default function Log() {
     (state) => state.log.logs,
   );
   const navigation = useNavigation()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   useLayoutEffect(() => {
     navigation.setOptions({

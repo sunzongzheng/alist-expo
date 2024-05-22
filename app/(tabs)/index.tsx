@@ -3,45 +3,39 @@ import React, {useCallback, useEffect, useState} from "react";
 import useAppInActive from "@/hooks/useAppInActive";
 import {useFocusEffect} from "expo-router";
 import { addEventListener } from "@react-native-community/netinfo";
+import {useAppDispatch, useAppSelector} from "@/app/store";
+import {refreshIsRunning} from "@/app/store/server";
 
 const {Alist} = NativeModules;
 const DEFAULT_PASSWORD = 'admin'
 const DEFAULT_IP = '127.0.0.1'
 
 export default function HomeScreen() {
-  const [isRunning, setIsRunning] = useState(false)
+  const isRunning = useAppSelector(state => state.server.isRunning)
+  const dispatch = useAppDispatch()
   const [adminPwd, setAdminPwd] = useState('')
   const [ip, setIP] = useState(DEFAULT_IP)
   const appInActive = useAppInActive()
   const start = async () => {
-    const isRunning = await Alist.isRunning()
-    console.log('start', isRunning)
     if (isRunning) return
     try {
       await Alist.init()
       await Alist.start();
-      updateIsRunning()
+      dispatch(refreshIsRunning())
     } catch (e) {
       console.error(e);
     }
   };
 
   const stop = async () => {
-    const isRunning = await Alist.isRunning()
-    console.log('stop', isRunning)
     if (!isRunning) return
     try {
       await Alist.stop()
-      updateIsRunning()
+      dispatch(refreshIsRunning())
     } catch (e) {
       console.error(e);
     }
   };
-
-  const updateIsRunning = useCallback(async () => {
-    setIsRunning(await Alist.isRunning())
-  }, [setIsRunning])
-
   const updateAdminPwd = useCallback(async () => {
     const pwd = await Alist.getAdminPassword()
     if (!pwd) {
@@ -66,7 +60,7 @@ export default function HomeScreen() {
   }, [])
 
   useEffect(() => {
-    updateIsRunning()
+    dispatch(refreshIsRunning())
   }, [appInActive]);
 
   useFocusEffect(React.useCallback(() => {
