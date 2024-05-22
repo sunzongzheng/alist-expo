@@ -4,18 +4,28 @@ import React
 import Alistlib // 导入Go库
 
 class EventListener: NSObject, AlistlibEventProtocol {
+    private var onProcessExitCallack: RCTResponseSenderBlock?
+    private var onShutdownCallback: RCTResponseSenderBlock?
+    private var onStartErrorCallback: RCTResponseSenderBlock?
+
+    init(onProcessExit: @escaping RCTResponseSenderBlock, onShutdown: @escaping RCTResponseSenderBlock, onStartError: @escaping RCTResponseSenderBlock) {
+        self.onProcessExitCallack = onProcessExit
+        self.onShutdownCallback = onShutdown
+        self.onStartErrorCallback = onStartError
+    }
+  
     func onProcessExit(_ code: Int) {
-        // Handle process exit logic here
+        self.onProcessExitCallack?([["code": code]])
         print("Process exited with code \(code).")
     }
 
     func onShutdown(_ t: String?) {
-        // Handle shutdown logic here
+        self.onShutdownCallback?([["t": t]])
         print("Shutdown initiated: \(t ?? "No additional information")")
     }
 
     func onStartError(_ t: String?, err: String?) {
-        // Handle start error logic here
+        self.onStartErrorCallback?([["t": t, "err": err]])
         print("Start error: \(err ?? "Unknown Error")")
     }
 }
@@ -28,10 +38,8 @@ class LogCallbackHandler: NSObject, AlistlibLogCallbackProtocol {
     }
 
     func onLog(_ level: Int16, time: Int64, message: String?) {
-        // 使用存储的JavaScript回调函数发送日志
         self.onLogCallback?([["level": level, "time": time, "message": message ?? ""]])
-      // Handle log callback logic here
-      print("Log message at level \(level): \(message ?? "No message")")
+        print("Log message at level \(level): \(message ?? "No message")")
     }
 }
 
@@ -45,9 +53,18 @@ class Alist: RCTEventEmitter {
     let documentsDirectory = paths[0]
     let fileURL = documentsDirectory.appendingPathComponent("alist")
 
-    let eventListener = EventListener()
+    let eventListener = EventListener(
+      onProcessExit: { [weak self] (body) in
+        self?.sendEvent(withName: "onProcessExit", body: body?[0])
+      },
+      onShutdown: { [weak self] (body) in
+        self?.sendEvent(withName: "onShutdown", body: body?[0])
+      },
+      onStartError: { [weak self] (body) in
+        self?.sendEvent(withName: "onStartError", body: body?[0])
+      }
+    )
 
-    // 创建LogCallbackHandler时，传递JS回调
     let logCallbackHandler = LogCallbackHandler(onLog: { [weak self] (logInfo) in
       self?.sendEvent(withName: "onLog", body: logInfo?[0])
     })
@@ -109,6 +126,6 @@ class Alist: RCTEventEmitter {
   }
 
   override func supportedEvents() -> [String]! {
-      return ["onLog"]
+      return ["onLog", "onProcessExit", "onShutdown", "onStartError"]
   }
 }

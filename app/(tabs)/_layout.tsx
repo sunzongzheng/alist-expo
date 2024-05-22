@@ -3,10 +3,10 @@ import React, {useEffect} from 'react';
 
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
 import {appendLog} from "@/app/store/log";
-import {useDispatch} from "react-redux";
 import {NativeEventEmitter, NativeModules} from "react-native";
+import {useAppDispatch} from "@/app/store";
+import {refreshIsRunning} from "@/app/store/server";
 // import RNFS from 'react-native-fs'
 
 const {Alist} = NativeModules;
@@ -15,16 +15,30 @@ const eventEmitter = new NativeEventEmitter(Alist);
 export default function TabLayout() {
   // const colorScheme = useColorScheme();
   const colorScheme = 'light';
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const subscription = eventEmitter.addListener('onLog', (logInfo) => {
-      // console.log(logInfo); // {"level": ..., "time": ..., "message": ...}
+    const onLog = eventEmitter.addListener('onLog', (logInfo) => {
       dispatch(appendLog(logInfo))
+    });
+    const onProcessExit = eventEmitter.addListener('onProcessExit', (logInfo) => {
+      console.log('onProcessExit', logInfo)
+      dispatch(refreshIsRunning())
+    });
+    const onShutdown = eventEmitter.addListener('onShutdown', (logInfo) => {
+      console.log('onShutdown', logInfo)
+      dispatch(refreshIsRunning())
+    });
+    const onStartError = eventEmitter.addListener('onStartError', (logInfo) => {
+      console.log('onStartError', logInfo)
+      dispatch(refreshIsRunning())
     });
 
     return () => {
-      subscription.remove();
+      onLog.remove();
+      onProcessExit.remove();
+      onShutdown.remove();
+      onStartError.remove();
     }
   }, [])
 
