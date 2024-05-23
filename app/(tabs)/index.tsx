@@ -1,4 +1,15 @@
-import {Image, StyleSheet, Platform, NativeModules, Button, Text, View, Switch, NativeEventEmitter} from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Platform,
+  NativeModules,
+  Button,
+  Text,
+  View,
+  Switch,
+  NativeEventEmitter,
+  ScrollView
+} from 'react-native';
 import React, {useCallback, useEffect, useState} from "react";
 import useAppInActive from "@/hooks/useAppInActive";
 import {useFocusEffect} from "expo-router";
@@ -78,55 +89,57 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.card}>
-        <View style={styles.cardItem}>
-          <Text>服务状态：{isRunning ? '运行中' : '未运行'}</Text>
-          <Switch
-            trackColor={{false: '#767577', true: '#81b0ff'}}
-            thumbColor={isRunning ? '#f5dd4b' : '#f4f3f4'}
-            ios_backgroundColor="#3e3e3e"
-            onValueChange={toggleSwitch}
-            value={isRunning}
-          />
-        </View>
-      </View>
-      <View style={[styles.card, styles.cardMarginTop]}>
-        <View style={styles.cardItem}>
-          <Text style={styles.bold}>账号信息</Text>
-        </View>
-        <View style={[styles.cardItem]}>
-          <Text>用户名</Text>
-          <Text>admin</Text>
-        </View>
-        <View style={[styles.cardItem]}>
-          <Text>密码</Text>
-          <View>
-            <Text>{isRunning ? adminPwd : '请先启动服务'}</Text>
+      <ScrollView style={{flex: 1, paddingHorizontal: 16,}} showsVerticalScrollIndicator={false}>
+        <View style={styles.card}>
+          <View style={styles.cardItem}>
+            <Text>服务状态：{isRunning ? '运行中' : '未运行'}</Text>
+            <Switch
+              trackColor={{false: '#767577', true: '#81b0ff'}}
+              thumbColor={isRunning ? '#f5dd4b' : '#f4f3f4'}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={toggleSwitch}
+              value={isRunning}
+            />
           </View>
         </View>
-      </View>
-      <View style={[styles.card, styles.cardMarginTop]}>
-        <View style={styles.cardItem}>
-          <Text style={styles.bold}>WebDAV信息</Text>
+        <View style={[styles.card, styles.cardMarginTop]}>
+          <View style={styles.cardItem}>
+            <Text style={styles.bold}>账号信息</Text>
+          </View>
+          <View style={[styles.cardItem]}>
+            <Text>用户名</Text>
+            <Text>admin</Text>
+          </View>
+          <View style={[styles.cardItem]}>
+            <Text>密码</Text>
+            <View>
+              <Text>{isRunning ? adminPwd : '请先启动服务'}</Text>
+            </View>
+          </View>
         </View>
-        <View style={[styles.cardItem]}>
-          <Text>服务器地址</Text>
-          <Text>{ip}</Text>
+        <View style={[styles.card, styles.cardMarginTop]}>
+          <View style={styles.cardItem}>
+            <Text style={styles.bold}>WebDAV信息</Text>
+          </View>
+          <View style={[styles.cardItem]}>
+            <Text>服务器地址</Text>
+            <Text>{ip}</Text>
+          </View>
+          <View style={[styles.cardItem]}>
+            <Text>端口</Text>
+            <Text>5244</Text>
+          </View>
+          <View style={[styles.cardItem]}>
+            <Text>路径</Text>
+            <Text>dav</Text>
+          </View>
+          <View style={[styles.cardItem]}>
+            <Text>用户名/密码</Text>
+            <Text>同“账号信息”</Text>
+          </View>
         </View>
-        <View style={[styles.cardItem]}>
-          <Text>端口</Text>
-          <Text>5244</Text>
-        </View>
-        <View style={[styles.cardItem]}>
-          <Text>路径</Text>
-          <Text>dav</Text>
-        </View>
-        <View style={[styles.cardItem]}>
-          <Text>用户名/密码</Text>
-          <Text>同“账号信息”</Text>
-        </View>
-      </View>
-      <Text style={styles.runningTip}>请保持App前台运行，否则服务可能不可用</Text>
+        <Text style={styles.runningTip}>请保持App前台运行，否则服务可能不可用</Text>
+      </ScrollView>
     </View>
   );
 }
@@ -149,8 +162,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   container: {
-    paddingHorizontal: 16,
-    paddingVertical: 16,
+    paddingTop: 16,
+    paddingBottom: 32,
+    flex: 1,
   },
   card: {
     backgroundColor: 'white',
