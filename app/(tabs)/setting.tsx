@@ -29,7 +29,7 @@ export default function Setting() {
         </View>
         <View style={[styles.cardItem]}>
           <Text>AList版本</Text>
-          <Text>3.34.0</Text>
+          <Text>3.35.0</Text>
         </View>
       </View>
       <Text style={[styles.cardTitle, styles.cardMarginTop]}>关于</Text>
