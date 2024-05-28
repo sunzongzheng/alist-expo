@@ -27,12 +27,12 @@ export default function TabLayout() {
     解法：这里对config文件中存储的文件路径进行处理，替换为新的Document目录
      */
     try {
-      const configData = await RNFS.readFile(RNFS.DocumentDirectoryPath + `/alist/config.json`)
+      const configData = await RNFS.readFile(RNFS.DocumentDirectoryPath + `/config.json`)
       if (configData.includes(RNFS.DocumentDirectoryPath)) return
       let patternString = RNFS.DocumentDirectoryPath.replace(/\/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\//, '/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}/')
       const regexPattern = new RegExp(patternString, 'g');
       const newConfigData = configData.replace(regexPattern, RNFS.DocumentDirectoryPath)
-      await RNFS.writeFile(RNFS.DocumentDirectoryPath + `/alist/config.json`, newConfigData)
+      await RNFS.writeFile(RNFS.DocumentDirectoryPath + `/config.json`, newConfigData)
     } catch (e) {
       console.error(e)
     }

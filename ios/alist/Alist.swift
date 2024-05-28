@@ -49,9 +49,7 @@ class Alist: RCTEventEmitter {
   @objc func `init`(_ resolve: @escaping RCTPromiseResolveBlock,
                             rejecter reject: @escaping RCTPromiseRejectBlock) {
 
-    let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-    let documentsDirectory = paths[0]
-    let fileURL = documentsDirectory.appendingPathComponent("alist")
+    let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
 
     let eventListener = EventListener(
       onProcessExit: { [weak self] (body) in
@@ -71,7 +69,7 @@ class Alist: RCTEventEmitter {
 
     // 初始化 NSError 的指针
     var error: NSError?
-    AlistlibSetConfigData(fileURL.path)
+    AlistlibSetConfigData(documentsDirectory.path)
     AlistlibSetConfigLogStd(true)
     AlistlibInit(eventListener, logCallbackHandler, &error)
     if (error == nil) {
