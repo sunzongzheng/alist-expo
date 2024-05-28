@@ -58,8 +58,8 @@ export default function Setting() {
               <TouchableOpacity onPress={() => Linking.openURL('https://github.com/sunzongzheng/alist-expo')}>
                 <Text style={styles.modalText}>alist-expo</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => Linking.openURL('https://github.com/sunzongzheng/alist')}>
-                <Text style={styles.modalText}>alist</Text>
+              <TouchableOpacity onPress={() => Linking.openURL('https://github.com/sunzongzheng/alist-ios')}>
+                <Text style={styles.modalText}>alist-ios</Text>
               </TouchableOpacity>
             </View>
           </View>
