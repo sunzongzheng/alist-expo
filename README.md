@@ -23,3 +23,6 @@
 ## 免自签版本
 
 您也可以使用[Apple Store版本](https://apps.apple.com/cn/app/alistserver/id6502905107)，由于开发者账号每年都需付费，此版本也需要付费使用
+
+由于Apple Store审核要求导致的特性：
+- 在线安装ipa能力已移除
