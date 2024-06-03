@@ -1,50 +1,25 @@
-# Welcome to your Expo app 👋
+# AListServer
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+这是一个可以运行在iOS上的AList服务端应用
 
-## Get started
+## 本地启动
 
-1. Install dependencies
+1. 使用[sunzongzheng/alist-ios](https://github.com/sunzongzheng/alist-ios)打包iOS framework到本仓库下的`ios/alist/Alistlib.xcframework`目录
 
-   ```bash
-   npm install
-   ```
-
-2. Start the app
+2. 启动应用
 
    ```bash
-    npx expo start
+    yarn && yarn ios
    ```
 
-In the output, you'll find options to open the app in a
+关于如何安装到真机 / ipa签名等iOS开发问题请使用谷歌搜索
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## 注意事项
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+1. 暂不支持在AList中添加`本地存储`
+2. App置于后台时，服务可能不可用，再次回到App后服务通常可以恢复
+3. App长时间置于后台后，服务可能被系统杀死，回到App后仍不可用时，重启服务即可
 
-## Get a fresh project
+## 免自签版本
 
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+您也可以使用[Apple Store版本](https://apps.apple.com/cn/app/alistserver/id6502905107)，由于开发者账号每年都需付费，此版本也需要付费使用
