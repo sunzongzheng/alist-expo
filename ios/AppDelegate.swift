@@ -4,9 +4,16 @@ import Expo
 
 @UIApplicationMain
 class AppDelegate: EXAppDelegateWrapper {
+    var backgroundManager: HCKeepBGRunManager?
+  
     override func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         self.moduleName = "main"
         self.initialProps = [String: Any]();
+      
+        backgroundManager = HCKeepBGRunManager.shared
+        NotificationCenter.default.addObserver(self, selector: #selector(handleApplicationDidEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleApplicationWillEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+      
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
 
@@ -45,5 +52,19 @@ class AppDelegate: EXAppDelegateWrapper {
 
     override func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
         return PlayerViewInstance.supportedInterfaceOrientations
+    }
+  
+    @objc private func handleApplicationDidEnterBackground() {
+        if (PlayerViewInstance.detailView?.playerView == nil) {
+          backgroundManager?.startBGRun()
+        }
+    }
+
+    @objc private func handleApplicationWillEnterForeground() {
+        backgroundManager?.stopBGRun()
+    }
+    
+    override func applicationWillTerminate(_ application: UIApplication) {
+        NotificationCenter.default.removeObserver(self)
     }
 }
