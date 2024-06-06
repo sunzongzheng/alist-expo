@@ -25,7 +25,7 @@ export default function Setting() {
       <View style={styles.card}>
         <View style={[styles.cardItem, styles.cardItemBorderBottom]}>
           <Text>App版本</Text>
-          <Text>1.0</Text>
+          <Text>1.2</Text>
         </View>
         <View style={[styles.cardItem]}>
           <Text>AList版本</Text>
