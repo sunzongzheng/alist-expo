@@ -2,7 +2,7 @@ import KSPlayer
 
 @objc(PlayerViewInstance)
 public class PlayerViewInstance: NSObject {
-    static weak var detailView: DetailView?
+    static weak var detailView: VideoView?
     @objc public static var supportedInterfaceOrientations: UIInterfaceOrientationMask {
       if (KSOptions.supportedInterfaceOrientations == .allButUpsideDown) {
         return .portrait

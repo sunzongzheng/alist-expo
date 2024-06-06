@@ -6,7 +6,7 @@ protocol DetailProtocol: UIView {
     var resource: KSPlayerResource? { get set }
 }
 
-class DetailView: UIView, DetailProtocol, PlayerControllerDelegate {
+class VideoView: UIView, DetailProtocol, PlayerControllerDelegate {
     let playerView = IOSView()
     var resource: KSPlayerResource? {
         didSet {

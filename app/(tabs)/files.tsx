@@ -11,6 +11,7 @@ import {
 import dayjs from 'dayjs'
 import DirectoryImage from "@/assets/images/directory.png";
 import VideoImage from "@/assets/images/video.png";
+import AudioImage from "@/assets/images/audio.png";
 import FileImage from "@/assets/images/file.png";
 import {router, useFocusEffect, useLocalSearchParams, useNavigation} from "expo-router";
 import axios from 'axios'
@@ -19,7 +20,7 @@ import {useAppSelector} from "@/app/store";
 import Toast from 'react-native-root-toast';
 import noDataImage from "@/assets/images/无服务.png";
 
-const {Alist, VideoPlayer} = NativeModules
+const {Alist, VideoPlayer, AudioPlayer} = NativeModules
 
 interface FileItem {
   name: string;
@@ -61,6 +62,11 @@ function isSupportVideoFile (filename: string) {
   return ['mp4', 'flv', 'm3u8', 'mkv', 'avi', 'mov', 'wmv', 'rm', 'rmvb', '3gp', 'm4v', 'dat', 'vob', 'mpeg', 'dv', 'mod'].includes(format.toLowerCase())
 }
 
+function isSupportAudioFile (filename: string) {
+  const format = filename.split('.').slice(-1)[0]
+  return ['mp3', 'flac', 'ogg', 'm4a', 'wav', 'opus', 'wma'].includes(format.toLowerCase())
+}
+
 function formatBytes(bytes: number)  {
   if (bytes === 0) return "0 Bytes";
 
@@ -83,7 +89,11 @@ function RenderItem({item, index}: {item: FileItem; index: number;}) {
         path: `${path}/${filename}`,
       })
       console.log('getFileInfo', data)
-      VideoPlayer.play(data.raw_url)
+      if (isSupportVideoFile(filename)) {
+        VideoPlayer.play(data.raw_url)
+      } else if (isSupportAudioFile(filename)) {
+        AudioPlayer.play(data.raw_url)
+      }
     } catch (e: any) {
       console.warn(e)
       Toast.show(e?.data?.message || '加载失败', {
@@ -101,6 +111,8 @@ function RenderItem({item, index}: {item: FileItem; index: number;}) {
       router.push(`/files?path=${encodeURIComponent(targetPath)}`)
     } else {
       if (isSupportVideoFile(item.name)) {
+        play(item.name)
+      } else if (isSupportAudioFile(item.name)) {
         play(item.name)
       } else {
         Toast.show('暂不支持此文件格式', {
@@ -122,7 +134,7 @@ function RenderItem({item, index}: {item: FileItem; index: number;}) {
           </View>
         ) : (
           <Image
-            source={item.is_dir ? DirectoryImage : isSupportVideoFile(item.name) ? VideoImage : FileImage}
+            source={item.is_dir ? DirectoryImage : isSupportVideoFile(item.name) ? VideoImage : isSupportAudioFile(item.name) ? AudioImage : FileImage}
             style={styles.image}
           />
         )}

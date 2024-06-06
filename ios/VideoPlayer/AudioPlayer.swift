@@ -2,8 +2,8 @@ import Foundation
 import UIKit
 import KSPlayer
 
-@objc(VideoPlayer)
-class VideoPlayer: NSObject {
+@objc(AudioPlayer)
+class AudioPlayer: NSObject {
   
   @objc func play(_ src: String) {
     DispatchQueue.main.async {
@@ -17,7 +17,7 @@ class VideoPlayer: NSObject {
         }
         
         let resource = KSPlayerResource(url: URL(string: src)!)
-        let controller = VideoView()
+        let controller = AudioView()
         controller.resource = resource
         controller.frame = window.bounds
         window.rootViewController?.view?.addSubview(controller)
