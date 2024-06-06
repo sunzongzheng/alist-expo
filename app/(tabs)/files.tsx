@@ -64,7 +64,7 @@ function isSupportVideoFile (filename: string) {
 
 function isSupportAudioFile (filename: string) {
   const format = filename.split('.').slice(-1)[0]
-  return ['mp3', 'flac', 'ogg', 'm4a', 'wav', 'opus', 'wma'].includes(format.toLowerCase())
+  return ['mp3', 'flac', 'ogg', 'm4a', 'wav', 'opus', 'wma', 'ape'].includes(format.toLowerCase())
 }
 
 function formatBytes(bytes: number)  {
@@ -85,14 +85,18 @@ function RenderItem({item, index}: {item: FileItem; index: number;}) {
     console.log('play', filename)
     setLoading(true)
     try {
-      const data: any = await http.post(`/fs/get`, {
+      const data: FileItem = await http.post(`/fs/get`, {
         path: `${path}/${filename}`,
       })
       console.log('getFileInfo', data)
+      const header: Record<string, string> = {}
+      if (data.provider.includes('Baidu')) {
+        header['User-Agent'] = 'pan.baidu.com'
+      }
       if (isSupportVideoFile(filename)) {
-        VideoPlayer.play(data.raw_url)
+        VideoPlayer.play(data.raw_url, header)
       } else if (isSupportAudioFile(filename)) {
-        AudioPlayer.play(data.raw_url)
+        AudioPlayer.play(data.raw_url, header)
       }
     } catch (e: any) {
       console.warn(e)

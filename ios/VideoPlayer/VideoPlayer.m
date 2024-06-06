@@ -3,6 +3,6 @@
 
 @interface RCT_EXTERN_MODULE(VideoPlayer, RCTViewManager)
 
-RCT_EXTERN_METHOD(play:(nonnull NSString *)src)
+RCT_EXTERN_METHOD(play:(nonnull NSString *)src header:(NSDictionary *)header)
 
 @end

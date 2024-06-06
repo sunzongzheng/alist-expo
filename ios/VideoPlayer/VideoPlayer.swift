@@ -5,7 +5,7 @@ import KSPlayer
 @objc(VideoPlayer)
 class VideoPlayer: NSObject {
   
-  @objc func play(_ src: String) {
+  @objc func play(_ src: String, header: [String: String]) {
     DispatchQueue.main.async {
       if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
         let window = appDelegate.window
@@ -16,9 +16,12 @@ class VideoPlayer: NSObject {
             PlayerViewInstance.detailView = nil
         }
         
-        let resource = KSPlayerResource(url: URL(string: src)!)
+        let options = KSOptions()
+        if !header.isEmpty {
+          options.appendHeader(header)
+        }
         let controller = VideoView()
-        controller.resource = resource
+        controller.playerView.set(url: URL(string: src)!, options: options)
         controller.frame = window.bounds
         window.rootViewController?.view?.addSubview(controller)
       }

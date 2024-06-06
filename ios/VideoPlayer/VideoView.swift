@@ -2,19 +2,8 @@ import CoreServices
 import KSPlayer
 import UIKit
 
-protocol DetailProtocol: UIView {
-    var resource: KSPlayerResource? { get set }
-}
-
-class VideoView: UIView, DetailProtocol, PlayerControllerDelegate {
+class VideoView: UIView, PlayerControllerDelegate {
     let playerView = IOSView()
-    var resource: KSPlayerResource? {
-        didSet {
-            if let resource {
-                playerView.set(resource: resource)
-            }
-        }
-    }
 
     init() {
         super.init(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
@@ -27,6 +16,12 @@ class VideoView: UIView, DetailProtocol, PlayerControllerDelegate {
       
         self.addSubview(playerView)
         playerView.translatesAutoresizingMaskIntoConstraints = false
+        playerView.backBlock = { [weak self] in
+            guard let self = self else { return }
+            self.playerView.resetPlayer()
+            self.removeFromSuperview()
+            PlayerViewInstance.detailView = nil
+        }
         playerView.fullscreenCallback = { [weak self] isFullScreen in
             guard let self = self else { return }
             if (isFullScreen) {
@@ -39,6 +34,10 @@ class VideoView: UIView, DetailProtocol, PlayerControllerDelegate {
         }
         playerView.becomeFirstResponder()
         playerView.delegate = self
+        playerView.toolBar.playButton.isSelected = true
+        playerView.replayButton.isHidden = true
+        playerView.loadingIndector.isHidden = false
+        playerView.loadingIndector.startAnimating()
         PlayerViewInstance.detailView = self
       
         NSLayoutConstraint.activate([
