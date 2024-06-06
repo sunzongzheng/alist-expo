@@ -15,7 +15,7 @@ export default function Webview() {
   const webviewRef = useRef<any>(null)
   const appInActive = useAppInActive()
   const navigation = useNavigation()
-  const url = 'http://127.0.0.1:5244'
+  const url = 'http://127.0.0.1:5244/@manage/storages'
 
   useLayoutEffect(() => {
     navigation.setOptions({
