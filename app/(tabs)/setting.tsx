@@ -45,6 +45,12 @@ export default function Setting() {
               />
           </View>
         </TouchableOpacity>
+        <TouchableOpacity onPress={() => Linking.openURL('https://t.me/+euPFHEllnjRhYThl')}>
+          <View style={styles.cardItem}>
+            <Text>加入交流群</Text>
+            <FontAwesome name="telegram" size={24} color="#24a1de" />
+          </View>
+        </TouchableOpacity>
       </View>
       <Modal
         animationType="fade"
