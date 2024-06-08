@@ -9,9 +9,11 @@ import { RootSiblingParent } from 'react-native-root-siblings';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import {Provider} from "react-redux";
 import store from "@/app/store";
+import {LogBox} from "react-native";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
+LogBox.ignoreAllLogs(true);
 
 export default function RootLayout() {
   // const colorScheme = useColorScheme();

@@ -2176,6 +2176,13 @@
     "@types/prop-types" "*"
     csstype "^3.0.2"
 
+"@types/sha256@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.npmmirror.com/@types/sha256/-/sha256-0.2.2.tgz#633bf20405e90cab0c4df1054b657f206ef15bf5"
+  integrity sha512-uKMaDzyzfcDYGEwTgLh+hmgDMxXWyIVodY8T+qt7A+NYvikW0lmGLMGbQ7BipCB8dzXHa55C9g+Ii/3Lgt1KmA==
+  dependencies:
+    "@types/node" "*"
+
 "@types/stack-utils@^2.0.0":
   version "2.0.3"
   resolved "https://registry.npmjs.org/@types/stack-utils/-/stack-utils-2.0.3.tgz#6209321eb2c1712a7e7466422b8cb1fc0d9dd5d8"
@@ -3089,10 +3096,20 @@ connect@^3.6.5, connect@^3.7.0:
     parseurl "~1.3.3"
     utils-merge "1.0.1"
 
+convert-hex@~0.1.0:
+  version "0.1.0"
+  resolved "https://registry.npmmirror.com/convert-hex/-/convert-hex-0.1.0.tgz#08c04568922c27776b8a2e81a95d393362ea0b65"
+  integrity sha512-w20BOb1PiR/sEJdS6wNrUjF5CSfscZFUp7R9NSlXH8h2wynzXVEPFPJECAnkNylZ+cvf3p7TyRUHggDmrwXT9A==
+
 convert-source-map@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/convert-source-map/-/convert-source-map-2.0.0.tgz#4b560f649fc4e918dd0ab75cf4961e8bc882d82a"
   integrity sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==
+
+convert-string@~0.1.0:
+  version "0.1.0"
+  resolved "https://registry.npmmirror.com/convert-string/-/convert-string-0.1.0.tgz#79ce41a9bb0d03bcf72cdc6a8f3c56fbbc64410a"
+  integrity sha512-1KX9ESmtl8xpT2LN2tFnKSbV4NiarbVi8DVb39ZriijvtTklyrT+4dT1wsGMHKD3CJUjXgvJzstm9qL9ICojGA==
 
 cookie-signature@^1.1.0:
   version "1.2.1"
@@ -7210,6 +7227,14 @@ setprototypeof@1.2.0:
   version "1.2.0"
   resolved "https://registry.npmjs.org/setprototypeof/-/setprototypeof-1.2.0.tgz#66c9a24a73f9fc28cbe66b09fed3d33dcaf1b424"
   integrity sha512-E5LDX7Wrp85Kil5bhZv46j8jOeboKq5JMmYM3gVGdGH8xFpPWXUMsNrlODCrkoxMEeNi/XZIwuRvY4XNwYMJpw==
+
+sha256@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.npmmirror.com/sha256/-/sha256-0.2.0.tgz#73a0b418daab7035bff86e8491e363412fc2ab05"
+  integrity sha512-kTWMJUaez5iiT9CcMv8jSq6kMhw3ST0uRdcIWl3D77s6AsLXNXRp3heeqqfu5+Dyfu4hwpQnMzhqHh8iNQxw0w==
+  dependencies:
+    convert-hex "~0.1.0"
+    convert-string "~0.1.0"
 
 shallow-clone@^3.0.0:
   version "3.0.1"
