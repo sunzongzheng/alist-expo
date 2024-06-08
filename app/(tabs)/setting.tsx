@@ -8,16 +8,34 @@ import {
   TouchableOpacity,
   Modal,
   Pressable,
-  Linking, Touchable, TouchableWithoutFeedback
+  Linking, Touchable, TouchableWithoutFeedback, NativeModules
 } from 'react-native';
 import Ionicons from "@expo/vector-icons/Ionicons";
-import {useCallback, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
+import {FontAwesome} from "@expo/vector-icons";
+
+const { AppInfo } = NativeModules;
 
 export default function Setting() {
   const [modalVisible, setModalVisible] = useState(false);
+  const [version, setVersion] = useState('1.0')
+
   const showAbout = useCallback(() => {
     setModalVisible(true)
   }, [setModalVisible])
+
+  const getAppVersion = useCallback(async () => {
+    try {
+      const version = await AppInfo.getAppVersion();
+      setVersion(version)
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
+
+  useEffect(() => {
+    getAppVersion()
+  }, [getAppVersion]);
 
   return (
     <View style={styles.container}>
@@ -25,7 +43,7 @@ export default function Setting() {
       <View style={styles.card}>
         <View style={[styles.cardItem, styles.cardItemBorderBottom]}>
           <Text>App版本</Text>
-          <Text>1.2</Text>
+          <Text>{version}</Text>
         </View>
         <View style={[styles.cardItem]}>
           <Text>AList版本</Text>

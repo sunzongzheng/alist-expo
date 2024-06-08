@@ -20,6 +20,8 @@
 		2B3F6E2B2C11E97500470DDC /* AudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B3F6E2A2C11E97500470DDC /* AudioPlayer.m */; };
 		2B3F6E2D2C11EA1100470DDC /* AudioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3F6E2C2C11EA1100470DDC /* AudioView.swift */; };
 		2B3F6E2F2C11EFCE00470DDC /* audio.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B3F6E2E2C11EFCE00470DDC /* audio.png */; };
+		2B3F6E352C14A8BE00470DDC /* AppInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3F6E342C14A8BE00470DDC /* AppInfo.swift */; };
+		2B3F6E382C14A8F800470DDC /* AppInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B3F6E372C14A8F800470DDC /* AppInfo.m */; };
 		2B82A2612BF5EFA500E4F0F5 /* Alistlib.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B82A2602BF5EFA500E4F0F5 /* Alistlib.xcframework */; };
 		2BBEDA572BF7A25700A07CF1 /* Alist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BBEDA562BF7A25700A07CF1 /* Alist.swift */; };
 		2BBEDA5A2BF7A40D00A07CF1 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BBEDA582BF7A40D00A07CF1 /* libresolv.tbd */; };
@@ -49,6 +51,8 @@
 		2B3F6E2A2C11E97500470DDC /* AudioPlayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AudioPlayer.m; sourceTree = "<group>"; };
 		2B3F6E2C2C11EA1100470DDC /* AudioView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioView.swift; sourceTree = "<group>"; };
 		2B3F6E2E2C11EFCE00470DDC /* audio.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = audio.png; sourceTree = "<group>"; };
+		2B3F6E342C14A8BE00470DDC /* AppInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInfo.swift; sourceTree = "<group>"; };
+		2B3F6E372C14A8F800470DDC /* AppInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppInfo.m; sourceTree = "<group>"; };
 		2B82A2602BF5EFA500E4F0F5 /* Alistlib.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Alistlib.xcframework; path = alist/Alistlib.xcframework; sourceTree = "<group>"; };
 		2BBEDA562BF7A25700A07CF1 /* Alist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Alist.swift; path = alist/Alist.swift; sourceTree = "<group>"; };
 		2BBEDA582BF7A40D00A07CF1 /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
@@ -124,6 +128,15 @@
 			path = HCKeepBGRunManager;
 			sourceTree = "<group>";
 		};
+		2B3F6E362C14A8CB00470DDC /* AppInfo */ = {
+			isa = PBXGroup;
+			children = (
+				2B3F6E342C14A8BE00470DDC /* AppInfo.swift */,
+				2B3F6E372C14A8F800470DDC /* AppInfo.m */,
+			);
+			path = AppInfo;
+			sourceTree = "<group>";
+		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -146,6 +159,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				2B3F6E362C14A8CB00470DDC /* AppInfo */,
 				2B3F6E1E2C11BCD500470DDC /* HCKeepBGRunManager */,
 				2B3F6DDD2C1032F200470DDC /* VideoPlayer */,
 				13B07FAE1A68108700A75B9A /* alist */,
@@ -482,6 +496,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B3F6E1B2C11552300470DDC /* AppDelegate.swift in Sources */,
+				2B3F6E382C14A8F800470DDC /* AppInfo.m in Sources */,
 				2B3F6E1D2C1189D800470DDC /* PlayerViewInstance.swift in Sources */,
 				2B3F6E2B2C11E97500470DDC /* AudioPlayer.m in Sources */,
 				2B3F6DDF2C10330400470DDC /* VideoPlayer.swift in Sources */,
@@ -492,6 +507,7 @@
 				B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */,
 				5D90CC3DA36D41CA86945CB5 /* noop-file.swift in Sources */,
 				2B3F6E232C11BFB700470DDC /* HCKeepBGRunManager.swift in Sources */,
+				2B3F6E352C14A8BE00470DDC /* AppInfo.swift in Sources */,
 				2B3F6E192C10C29600470DDC /* IOSView.swift in Sources */,
 				2B3F6E292C11E95C00470DDC /* AudioPlayer.swift in Sources */,
 				2B3F6E2D2C11EA1100470DDC /* AudioView.swift in Sources */,
@@ -644,7 +660,10 @@
 				LIBRARY_SEARCH_PATHS = "$(SDKROOT)/usr/lib/swift\"$(inherited)\"";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
@@ -713,7 +732,10 @@
 				);
 				LIBRARY_SEARCH_PATHS = "$(SDKROOT)/usr/lib/swift\"$(inherited)\"";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
