@@ -11,14 +11,18 @@ import {
   Linking, Touchable, TouchableWithoutFeedback, NativeModules
 } from 'react-native';
 import Ionicons from "@expo/vector-icons/Ionicons";
-import {useCallback, useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {FontAwesome} from "@expo/vector-icons";
+import {useAppDispatch, useAppSelector} from "@/app/store";
+import {setBackgroundMode} from "@/app/store/setting";
 
 const { AppInfo } = NativeModules;
 
 export default function Setting() {
   const [modalVisible, setModalVisible] = useState(false);
   const [version, setVersion] = useState('1.0')
+  const backgroundMode = useAppSelector(state => state.setting.backgroundMode)
+  const dispatch = useAppDispatch()
 
   const showAbout = useCallback(() => {
     setModalVisible(true)
@@ -39,14 +43,31 @@ export default function Setting() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.cardTitle}>版本信息</Text>
+      <Text style={styles.cardTitle}>通用</Text>
+      <View style={styles.card}>
+        <View style={[styles.cardItem, styles.cardItemLarge]}>
+          <View>
+            <Text style={styles.itemTitle}>后台运行</Text>
+            <Text style={styles.itemDescription}>开启后服务常驻后台，息屏也可访问服务</Text>
+          </View>
+          <Switch
+            trackColor={{false: '#767577', true: '#81b0ff'}}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={(value) => {
+              dispatch(setBackgroundMode(value))
+            }}
+            value={backgroundMode}
+          />
+        </View>
+      </View>
+      <Text style={[styles.cardTitle, styles.cardMarginTop]}>版本信息</Text>
       <View style={styles.card}>
         <View style={[styles.cardItem, styles.cardItemBorderBottom]}>
-          <Text>App版本</Text>
+          <Text style={styles.itemTitle}>App版本</Text>
           <Text>{version}</Text>
         </View>
         <View style={[styles.cardItem]}>
-          <Text>AList版本</Text>
+          <Text style={styles.itemTitle}>AList版本</Text>
           <Text>3.35.0</Text>
         </View>
       </View>
@@ -54,7 +75,7 @@ export default function Setting() {
       <View style={[styles.card]}>
         <TouchableOpacity onPress={showAbout}>
           <View style={styles.cardItem}>
-              <Text>关于</Text>
+              <Text style={styles.itemTitle}>关于</Text>
               <Ionicons
                 name={'chevron-forward-outline'}
                 color={'#D1D1D6'}
@@ -65,7 +86,7 @@ export default function Setting() {
         </TouchableOpacity>
         <TouchableOpacity onPress={() => Linking.openURL('https://t.me/+euPFHEllnjRhYThl')}>
           <View style={styles.cardItem}>
-            <Text>加入交流群</Text>
+            <Text style={styles.itemTitle}>加入交流群</Text>
             <FontAwesome name="telegram" size={24} color="#24a1de" />
           </View>
         </TouchableOpacity>
@@ -134,6 +155,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 50,
   },
+  cardItemLarge: {
+    height: 65,
+  },
   cardItemBorderBottom: {
     borderBottomWidth: 1,
     borderBottomColor: 'rgb(228, 228, 228)',
@@ -185,4 +209,12 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     textAlign: 'center',
   },
+  itemTitle: {
+    fontSize: 15,
+  },
+  itemDescription: {
+    fontSize: 12,
+    color: 'gray',
+    marginTop: 4,
+  }
 });

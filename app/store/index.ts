@@ -1,13 +1,41 @@
-import {configureStore} from '@reduxjs/toolkit';
+import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import log from './log';
 import server from './server';
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
+import {
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import setting from "@/app/store/setting";
 
-const store =  configureStore({
-  reducer: {
-    log,
-    server,
-  },
+const persistConfig = {
+  key: 'alist',
+  storage: AsyncStorage,
+  whitelist: ['setting'],
+};
+
+const reducers = combineReducers({
+  log,
+  server,
+  setting,
+});
+
+const persistedReducer = persistReducer(persistConfig, reducers);
+
+const store= configureStore({
+  reducer: persistedReducer,
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
 });
 
 export type RootState = ReturnType<typeof store.getState>

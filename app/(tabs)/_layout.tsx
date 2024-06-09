@@ -1,21 +1,26 @@
-import { Tabs } from 'expo-router';
+import {Tabs, useFocusEffect} from 'expo-router';
 import React, {useCallback, useEffect} from 'react';
 
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
 import {appendLog} from "@/app/store/log";
 import {NativeEventEmitter, NativeModules} from "react-native";
-import {useAppDispatch} from "@/app/store";
+import {useAppDispatch, useAppSelector} from "@/app/store";
 import {refreshIsRunning} from "@/app/store/server";
 import RNFS from 'react-native-fs'
+import useAppInActive from "@/hooks/useAppInActive";
 
-const {Alist} = NativeModules;
+const {Alist, HCKeepBGRunManager} = NativeModules;
 const eventEmitter = new NativeEventEmitter(Alist);
 
 export default function TabLayout() {
   // const colorScheme = useColorScheme();
   const colorScheme = 'light';
   const dispatch = useAppDispatch();
+  const backgroundMode = useAppSelector(state => state.setting.backgroundMode)
+  const isRunning = useAppSelector(state => state.server.isRunning)
+  const appInActive = useAppInActive()
+
   const ensureConfigDirectory = useCallback(async () => {
     /*
     背景：
@@ -69,6 +74,20 @@ export default function TabLayout() {
   useEffect(() => {
     ensureConfigDirectory()
   }, [])
+
+  useFocusEffect(useCallback(() => {
+    dispatch(refreshIsRunning())
+  }, [appInActive]));
+
+  useEffect(() => {
+    if (backgroundMode && isRunning) {
+      if (appInActive) {
+        HCKeepBGRunManager.stopBGRun()
+      } else {
+        HCKeepBGRunManager.startBGRun()
+      }
+    }
+  }, [appInActive, backgroundMode, isRunning])
 
   return (
     <Tabs

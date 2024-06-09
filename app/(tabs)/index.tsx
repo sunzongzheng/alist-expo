@@ -11,7 +11,6 @@ import {
   ScrollView
 } from 'react-native';
 import React, {useCallback, useEffect, useState} from "react";
-import useAppInActive from "@/hooks/useAppInActive";
 import {useFocusEffect} from "expo-router";
 import { addEventListener } from "@react-native-community/netinfo";
 import {useAppDispatch, useAppSelector} from "@/app/store";
@@ -26,7 +25,6 @@ export default function HomeScreen() {
   const dispatch = useAppDispatch()
   const [adminPwd, setAdminPwd] = useState('')
   const [ip, setIP] = useState(DEFAULT_IP)
-  const appInActive = useAppInActive()
   const start = async () => {
     if (isRunning) return
     try {
@@ -69,10 +67,6 @@ export default function HomeScreen() {
   const changePassword = useCallback((pwd: string) => {
     return Alist.setAdminPassword(pwd)
   }, [])
-
-  useEffect(() => {
-    dispatch(refreshIsRunning())
-  }, [appInActive]);
 
   useFocusEffect(React.useCallback(() => {
     if (isRunning) {

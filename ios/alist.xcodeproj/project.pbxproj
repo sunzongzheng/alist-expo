@@ -28,6 +28,7 @@
 		2BBEDA5B2BF7A40D00A07CF1 /* libresolv.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BBEDA592BF7A40D00A07CF1 /* libresolv.9.tbd */; };
 		2BBEDA5D2BF7A41800A07CF1 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BBEDA5C2BF7A41800A07CF1 /* IOKit.framework */; };
 		2BBEDA5F2BF7A45400A07CF1 /* Alist.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BBEDA5E2BF7A45400A07CF1 /* Alist.m */; };
+		2BD587C42C15BE800001968A /* HCKeepBGRunManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BD587C32C15BE800001968A /* HCKeepBGRunManager.m */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
 		5D90CC3DA36D41CA86945CB5 /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A0C0BAEF2E43AF98E3347E /* noop-file.swift */; };
 		6BE67DD8C79FFEC03A59BE50 /* Pods_alist.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D31712EB65DBA636FE2174A5 /* Pods_alist.framework */; };
@@ -59,6 +60,7 @@
 		2BBEDA592BF7A40D00A07CF1 /* libresolv.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.9.tbd; path = usr/lib/libresolv.9.tbd; sourceTree = SDKROOT; };
 		2BBEDA5C2BF7A41800A07CF1 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		2BBEDA5E2BF7A45400A07CF1 /* Alist.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = Alist.m; path = alist/Alist.m; sourceTree = "<group>"; };
+		2BD587C32C15BE800001968A /* HCKeepBGRunManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HCKeepBGRunManager.m; sourceTree = "<group>"; };
 		6C2E3173556A471DD304B334 /* Pods-alist.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-alist.debug.xcconfig"; path = "Target Support Files/Pods-alist/Pods-alist.debug.xcconfig"; sourceTree = "<group>"; };
 		7A4D352CD337FB3A3BF06240 /* Pods-alist.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-alist.release.xcconfig"; path = "Target Support Files/Pods-alist/Pods-alist.release.xcconfig"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = alist/SplashScreen.storyboard; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 			children = (
 				2B3F6E262C11CC9800470DDC /* jm.mp3 */,
 				2B3F6E222C11BFB700470DDC /* HCKeepBGRunManager.swift */,
+				2BD587C32C15BE800001968A /* HCKeepBGRunManager.m */,
 			);
 			path = HCKeepBGRunManager;
 			sourceTree = "<group>";
@@ -336,6 +339,7 @@
 				"${BUILT_PRODUCTS_DIR}/RCT-Folly/folly.framework",
 				"${BUILT_PRODUCTS_DIR}/RCTDeprecation/RCTDeprecation.framework",
 				"${BUILT_PRODUCTS_DIR}/RCTTypeSafety/RCTTypeSafety.framework",
+				"${BUILT_PRODUCTS_DIR}/RNCAsyncStorage/RNCAsyncStorage.framework",
 				"${BUILT_PRODUCTS_DIR}/RNFS/RNFS.framework",
 				"${BUILT_PRODUCTS_DIR}/RNGestureHandler/RNGestureHandler.framework",
 				"${BUILT_PRODUCTS_DIR}/React-Codegen/React_Codegen.framework",
@@ -390,6 +394,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/folly.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RCTDeprecation.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RCTTypeSafety.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RNCAsyncStorage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RNFS.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RNGestureHandler.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/React_Codegen.framework",
@@ -500,6 +505,7 @@
 				2B3F6E1D2C1189D800470DDC /* PlayerViewInstance.swift in Sources */,
 				2B3F6E2B2C11E97500470DDC /* AudioPlayer.m in Sources */,
 				2B3F6DDF2C10330400470DDC /* VideoPlayer.swift in Sources */,
+				2BD587C42C15BE800001968A /* HCKeepBGRunManager.m in Sources */,
 				2B3F6E172C10BBA600470DDC /* VideoView.swift in Sources */,
 				2BBEDA572BF7A25700A07CF1 /* Alist.swift in Sources */,
 				2B3F6DE52C10399800470DDC /* VideoPlayer.m in Sources */,
@@ -533,7 +539,7 @@
 					"FB_SONARKIT_ENABLED=1",
 				);
 				INFOPLIST_FILE = alist/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = AListServer;
+				INFOPLIST_KEY_CFBundleDisplayName = "AListServer-dev";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -546,7 +552,7 @@
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG -DDEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = com.gendago.alist;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.gendago.alist-dev";
 				PRODUCT_NAME = alist;
 				SWIFT_OBJC_BRIDGING_HEADER = "alist/alist-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";

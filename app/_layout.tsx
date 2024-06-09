@@ -10,10 +10,14 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 import {Provider} from "react-redux";
 import store from "@/app/store";
 import {LogBox} from "react-native";
+import {persistStore} from "redux-persist";
+import {PersistGate} from "redux-persist/integration/react";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 LogBox.ignoreAllLogs(true);
+
+const persistor = persistStore(store);
 
 export default function RootLayout() {
   // const colorScheme = useColorScheme();
@@ -35,12 +39,14 @@ export default function RootLayout() {
   return (
     <RootSiblingParent>
       <Provider store={store}>
-        <ThemeProvider value={DefaultTheme}>
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="+not-found" />
-          </Stack>
-        </ThemeProvider>
+        <PersistGate loading={null} persistor={persistor}>
+          <ThemeProvider value={DefaultTheme}>
+            <Stack>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen name="+not-found" />
+            </Stack>
+          </ThemeProvider>
+        </PersistGate>
       </Provider>
     </RootSiblingParent>
   );

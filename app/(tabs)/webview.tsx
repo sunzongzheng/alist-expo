@@ -1,13 +1,11 @@
 import React, {useCallback, useEffect, useLayoutEffect, useRef, useState} from 'react'
 import {WebView} from 'react-native-webview';
 import {NativeModules, View, Text, Image, Linking, ActivityIndicator} from "react-native";
-import useAppInActive from "@/hooks/useAppInActive";
 import {useFocusEffect, useNavigation} from "expo-router";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {Feather} from '@expo/vector-icons';
 import noDataImage from '../../assets/images/无服务.png'
-import {useAppDispatch, useAppSelector} from "@/app/store";
-import {refreshIsRunning} from "@/app/store/server";
+import {useAppSelector} from "@/app/store";
 import axios from "axios";
 import sha256 from 'sha256'
 
@@ -21,9 +19,7 @@ export function hashPwd(pwd: string) {
 
 export default function Webview() {
   const isRunning = useAppSelector(state => state.server.isRunning)
-  const dispatch = useAppDispatch()
   const webviewRef = useRef<any>(null)
-  const appInActive = useAppInActive()
   const navigation = useNavigation()
   const url = 'http://127.0.0.1:5244/@manage/storages'
   const [injectedJS, setInjectedJS] = useState('')
@@ -77,12 +73,8 @@ export default function Webview() {
   }, [isRunning, injectedJS]);
 
   useFocusEffect(useCallback(() => {
-    dispatch(refreshIsRunning())
-  }, [appInActive]));
-
-  useFocusEffect(useCallback(() => {
     refreshWebToken()
-  }, [appInActive, refreshWebToken]));
+  }, [refreshWebToken]));
 
   return isRunning ? injectedJS ? (
       <WebView
