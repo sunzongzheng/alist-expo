@@ -1,14 +1,20 @@
-import React, {useCallback, useEffect, useLayoutEffect, useRef, useState} from 'react'
+import React, {
+  ForwardedRef,
+  forwardRef,
+  useCallback,
+  useEffect, useImperativeHandle, useLayoutEffect, useRef,
+  useState
+} from 'react'
 import {WebView} from 'react-native-webview';
 import {NativeModules, View, Text, Image, Linking, ActivityIndicator} from "react-native";
 import {useFocusEffect, useNavigation} from "expo-router";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import {Feather} from '@expo/vector-icons';
-import noDataImage from '../../assets/images/无服务.png'
+import noDataImage from '@/assets/images/无服务.png'
 import {useAppSelector} from "@/app/store";
 import axios from "axios";
 import sha256 from 'sha256'
 import Toast from "react-native-root-toast";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import {Feather} from "@expo/vector-icons";
 
 const {Alist, AppInfo} = NativeModules
 
@@ -18,13 +24,33 @@ export function hashPwd(pwd: string) {
   return sha256(`${pwd}-${hash_salt}`)
 }
 
-export default function Webview() {
+interface AListWebViewProps {
+  path: string;
+}
+
+export interface AListWebviewRef {
+  reload: WebView['reload'];
+  getCurrentUrl: () => string;
+}
+
+const AListWebview = forwardRef((props: AListWebViewProps, forwardedRef: ForwardedRef<AListWebviewRef>) => {
+  const { path } = props;
   const isRunning = useAppSelector(state => state.server.isRunning)
-  const webviewRef = useRef<any>(null)
+  const webviewRef = useRef<WebView>(null)
   const navigation = useNavigation()
-  const url = 'http://127.0.0.1:5244/@manage/storages'
+  const url = `http://127.0.0.1:5244${path}`
   const [injectedJS, setInjectedJS] = useState('')
   const [schemes, setSchemes] = useState([])
+  const currentUrlRef = useRef(url)
+
+  useImperativeHandle(forwardedRef, () => ({
+    reload: () => {
+      if (webviewRef.current) {
+        webviewRef.current.reload();
+      }
+    },
+    getCurrentUrl: () => currentUrlRef.current,
+  }));
 
   const refreshWebToken = useCallback(async () => {
     if (isRunning) {
@@ -39,7 +65,7 @@ export default function Webview() {
           localStorage.setItem("token", "${res.data.data.token}");
           true;
         `
-        console.log('injectJavaScript', script)
+        // console.log('injectJavaScript', script)
         if (webviewRef.current) {
           webviewRef.current.injectJavaScript(script)
         } else {
@@ -53,12 +79,12 @@ export default function Webview() {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerLeft: isRunning && injectedJS ? () => (
+      headerLeft: isRunning ? () => (
         <Ionicons
           name="refresh-outline"
           size={22}
           color="white"
-          onPress={() => webviewRef.current.reload()}
+          onPress={() => webviewRef.current?.reload()}
           style={{ marginLeft: 16 }}
         />
       ) : null,
@@ -67,7 +93,7 @@ export default function Webview() {
           name="external-link"
           size={22}
           color="white"
-          onPress={() => Linking.openURL(url)}
+          onPress={() => Linking.openURL(currentUrlRef.current)}
           style={{ marginRight: 16 }}
         />
       ) : null
@@ -101,6 +127,9 @@ export default function Webview() {
           }
           return true;
         }}
+        applicationNameForUserAgent={'AListServer'}
+        allowsBackForwardNavigationGestures={true}
+        onNavigationStateChange={({url}) => currentUrlRef.current = url}
       />
     ) : (
       <View style={{alignItems: 'center', justifyContent: 'center', flex: 1,}}>
@@ -112,4 +141,6 @@ export default function Webview() {
       <Text>请先启动服务</Text>
     </View>
   );
-}
+})
+
+export default AListWebview

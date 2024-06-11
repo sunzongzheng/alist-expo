@@ -112,17 +112,16 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="files"
+        name="browse"
         options={{
           title: '浏览',
-          headerTitle: '根目录',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'folder' : 'folder-outline'} color={color} />
           ),
         }}
       />
       <Tabs.Screen
-        name="webview"
+        name="manage"
         options={{
           title: '管理',
           tabBarIcon: ({ color, focused }) => (
