@@ -92,6 +92,8 @@
         <string>figplayer</string>
         <string>infuse</string>
         <string>intent</string>
+        <string>filebox</string>
+        <string>open-vidhub</string>
     </array>
 </dict>
 </plist>
