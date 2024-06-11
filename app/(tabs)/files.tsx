@@ -38,12 +38,14 @@ interface FileItem {
   header: string;
 }
 
+const UA_CHROME = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'
+
 const http = axios.create({
   timeout: 5000,
   baseURL: 'http://127.0.0.1:5244/api',
   headers: {
     Authorization: '',
-    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36'
+    'User-Agent': UA_CHROME
   }
 })
 
@@ -92,6 +94,8 @@ function RenderItem({item, index}: {item: FileItem; index: number;}) {
       const header: Record<string, string> = {}
       if (data.provider.includes('Baidu')) {
         header['User-Agent'] = 'pan.baidu.com'
+      } else {
+        header['User-Agent'] = UA_CHROME
       }
       if (isSupportVideoFile(filename)) {
         VideoPlayer.play(data.raw_url, header)

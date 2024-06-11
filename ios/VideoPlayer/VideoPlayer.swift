@@ -19,6 +19,9 @@ class VideoPlayer: NSObject {
         let options = KSOptions()
         if !header.isEmpty {
           options.appendHeader(header)
+          if ((header["User-Agent"]) != nil) {
+            options.userAgent = header["User-Agent"]
+          }
         }
         let controller = VideoView()
         controller.playerView.set(url: URL(string: src)!, options: options)
