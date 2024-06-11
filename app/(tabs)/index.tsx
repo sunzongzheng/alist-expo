@@ -8,23 +8,24 @@ import {
   View,
   Switch,
   NativeEventEmitter,
-  ScrollView
+  ScrollView, TouchableOpacity
 } from 'react-native';
 import React, {useCallback, useEffect, useState} from "react";
 import {useFocusEffect} from "expo-router";
 import { addEventListener } from "@react-native-community/netinfo";
 import {useAppDispatch, useAppSelector} from "@/app/store";
 import {refreshIsRunning} from "@/app/store/server";
+import Clipboard from '@react-native-clipboard/clipboard';
+import Toast from "react-native-root-toast";
 
 const {Alist} = NativeModules;
 const DEFAULT_PASSWORD = 'admin'
-const DEFAULT_IP = '127.0.0.1'
 
 export default function HomeScreen() {
   const isRunning = useAppSelector(state => state.server.isRunning)
   const dispatch = useAppDispatch()
   const [adminPwd, setAdminPwd] = useState('')
-  const [ip, setIP] = useState(DEFAULT_IP)
+  const [ip, setIP] = useState(null)
   const start = async () => {
     if (isRunning) return
     try {
@@ -68,6 +69,13 @@ export default function HomeScreen() {
     return Alist.setAdminPassword(pwd)
   }, [])
 
+  const copy = useCallback((ip: string) => {
+    Clipboard.setString(ip);
+    Toast.show('已复制到剪切板', {
+      position: Toast.positions.CENTER
+    })
+  }, [])
+
   useFocusEffect(React.useCallback(() => {
     if (isRunning) {
       updateAdminPwd()
@@ -77,7 +85,7 @@ export default function HomeScreen() {
   useEffect(() => {
     return addEventListener(state => {
       // @ts-ignore
-      setIP(state.details?.ipAddress || DEFAULT_IP)
+      setIP(state.details?.ipAddress)
     });
   }, []);
 
@@ -115,17 +123,30 @@ export default function HomeScreen() {
           <View style={styles.cardItem}>
             <Text style={styles.bold}>WebDAV信息</Text>
           </View>
-          <View style={[styles.cardItem]}>
+          <View style={[styles.cardItem, ip ? styles.multiRow : null]}>
             <Text>服务器地址</Text>
-            <Text>{ip}</Text>
+            <View style={{justifyContent: 'center', alignItems: 'flex-end'}}>
+              {ip ? (
+                <TouchableOpacity onPress={() => copy(ip)}>
+                  <Text style={{textAlign: 'right', marginBottom: 8}}>{ip}（局域网访问）</Text>
+                </TouchableOpacity>
+              ) : null }
+              <TouchableOpacity onPress={() => copy('127.0.0.1')}>
+                <Text style={{textAlign: 'right'}}>127.0.0.1（限本机访问）</Text>
+              </TouchableOpacity>
+            </View>
           </View>
           <View style={[styles.cardItem]}>
             <Text>端口</Text>
-            <Text>5244</Text>
+            <TouchableOpacity onPress={() => copy('5244')}>
+              <Text>5244</Text>
+            </TouchableOpacity>
           </View>
           <View style={[styles.cardItem]}>
             <Text>路径</Text>
-            <Text>dav</Text>
+            <TouchableOpacity onPress={() => copy('dav')}>
+              <Text>dav</Text>
+            </TouchableOpacity>
           </View>
           <View style={[styles.cardItem]}>
             <Text>用户名/密码</Text>
@@ -171,6 +192,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     height: 50,
+  },
+  multiRow: {
+    minHeight: 50,
+    alignItems: 'flex-start',
   },
   cardItemBorderBottom: {
     borderBottomWidth: 1,
