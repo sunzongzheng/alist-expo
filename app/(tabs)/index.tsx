@@ -25,6 +25,7 @@ export default function HomeScreen() {
   const isRunning = useAppSelector(state => state.server.isRunning)
   const dispatch = useAppDispatch()
   const [adminPwd, setAdminPwd] = useState('')
+  const [adminUsername, setAdminUsername] = useState('')
   const [ip, setIP] = useState(null)
   const start = async () => {
     if (isRunning) return
@@ -46,8 +47,9 @@ export default function HomeScreen() {
       console.error(e);
     }
   };
-  const updateAdminPwd = useCallback(async () => {
+  const updateAdminInfo = useCallback(async () => {
     const pwd = await Alist.getAdminPassword()
+    const username = await Alist.getAdminUsername()
     if (!pwd) {
       // 只有首次启动服务会获取不到密码，那么直接设置初始密码为admin
       await changePassword(DEFAULT_PASSWORD)
@@ -55,7 +57,8 @@ export default function HomeScreen() {
     } else {
       setAdminPwd(pwd)
     }
-  }, [setAdminPwd])
+    setAdminUsername(username)
+  }, [setAdminPwd, setAdminUsername])
 
   const toggleSwitch = useCallback(() => {
     if (isRunning) {
@@ -78,9 +81,9 @@ export default function HomeScreen() {
 
   useFocusEffect(React.useCallback(() => {
     if (isRunning) {
-      updateAdminPwd()
+      updateAdminInfo()
     }
-  }, [isRunning, updateAdminPwd]));
+  }, [isRunning, updateAdminInfo]));
 
   useEffect(() => {
     return addEventListener(state => {
@@ -110,13 +113,11 @@ export default function HomeScreen() {
           </View>
           <View style={[styles.cardItem]}>
             <Text>用户名</Text>
-            <Text>admin</Text>
+            <Text>{isRunning ? adminUsername : '请先启动服务'}</Text>
           </View>
           <View style={[styles.cardItem]}>
             <Text>密码</Text>
-            <View>
-              <Text>{isRunning ? adminPwd : '请先启动服务'}</Text>
-            </View>
+            <Text>{isRunning ? adminPwd : '请先启动服务'}</Text>
           </View>
         </View>
         <View style={[styles.card, styles.cardMarginTop]}>

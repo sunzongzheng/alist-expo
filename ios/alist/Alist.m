@@ -16,5 +16,7 @@ RCT_EXTERN_METHOD(setAdminPassword:(NSString *)password resolver:(RCTPromiseReso
 
 RCT_EXTERN_METHOD(getAdminPassword:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(getAdminUsername:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+
 RCT_EXTERN_METHOD(getOutboundIPString:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 @end

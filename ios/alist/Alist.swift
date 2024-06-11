@@ -107,6 +107,11 @@ class Alist: RCTEventEmitter {
     resolve(AlistlibGetAdminPassword())
   }
 
+  @objc func getAdminUsername(_ resolve: @escaping RCTPromiseResolveBlock,
+                            rejecter reject: @escaping RCTPromiseRejectBlock) {
+    resolve(AlistlibGetAdminUsername())
+  }
+
   @objc func getOutboundIPString(_ resolve: @escaping RCTPromiseResolveBlock,
                             rejecter reject: @escaping RCTPromiseRejectBlock) {
     resolve(AlistlibGetOutboundIPString())

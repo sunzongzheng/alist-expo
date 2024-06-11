@@ -55,9 +55,10 @@ const AListWebview = forwardRef((props: AListWebViewProps, forwardedRef: Forward
   const refreshWebToken = useCallback(async () => {
     if (isRunning) {
       try {
+        const username = await Alist.getAdminUsername()
         const password = await Alist.getAdminPassword()
         const res = await axios.post('http://127.0.0.1:5244/api/auth/login/hash', {
-          username: 'admin',
+          username: username,
           password: hashPwd(password),
           otp_code: ""
         })
