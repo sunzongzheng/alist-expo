@@ -131,6 +131,12 @@ const AListWebview = forwardRef((props: AListWebViewProps, forwardedRef: Forward
         applicationNameForUserAgent={'AListServer'}
         allowsBackForwardNavigationGestures={true}
         onNavigationStateChange={({url}) => currentUrlRef.current = url}
+        onOpenWindow={({nativeEvent: {targetUrl}}) => {
+          Linking.openURL(targetUrl)
+        }}
+        onFileDownload={({ nativeEvent: { downloadUrl } }) => {
+          Linking.openURL(downloadUrl)
+        }}
       />
     ) : (
       <View style={{alignItems: 'center', justifyContent: 'center', flex: 1,}}>
