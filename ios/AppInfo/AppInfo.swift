@@ -17,4 +17,14 @@ class AppInfo: NSObject {
       reject("no_version", "No version found", error)
     }
   }
+  
+  @objc
+  func getApplicationQueriesSchemes(_ resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) {
+    if let schemes = Bundle.main.infoDictionary?["LSApplicationQueriesSchemes"] as? [String] {
+      resolve(schemes)
+    } else {
+      let error = NSError(domain: "", code: 200, userInfo: nil)
+      reject("no_schemes", "No LSApplicationQueriesSchemes found", error)
+    }
+  }
 }

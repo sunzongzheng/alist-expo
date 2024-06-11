@@ -8,8 +8,9 @@ import noDataImage from '../../assets/images/无服务.png'
 import {useAppSelector} from "@/app/store";
 import axios from "axios";
 import sha256 from 'sha256'
+import Toast from "react-native-root-toast";
 
-const {Alist} = NativeModules
+const {Alist, AppInfo} = NativeModules
 
 const hash_salt = "https://github.com/alist-org/alist"
 
@@ -23,6 +24,7 @@ export default function Webview() {
   const navigation = useNavigation()
   const url = 'http://127.0.0.1:5244/@manage/storages'
   const [injectedJS, setInjectedJS] = useState('')
+  const [schemes, setSchemes] = useState([])
 
   const refreshWebToken = useCallback(async () => {
     if (isRunning) {
@@ -76,6 +78,10 @@ export default function Webview() {
     refreshWebToken()
   }, [refreshWebToken]));
 
+  useEffect(() => {
+    AppInfo.getApplicationQueriesSchemes().then(setSchemes)
+  }, []);
+
   return isRunning ? injectedJS ? (
       <WebView
         source={{ uri: url }}
@@ -83,6 +89,18 @@ export default function Webview() {
         ref={webviewRef}
         injectedJavaScriptBeforeContentLoaded={injectedJS}
         webviewDebuggingEnabled={true}
+        originWhitelist={['*']}
+        onShouldStartLoadWithRequest={request => {
+          if (schemes.some(item => request.url.startsWith(`${item}:`))) {
+            Linking.openURL(request.url).catch(err => {
+              Toast.show('无法打开，请确认是否安装该App', {
+                position: Toast.positions.CENTER,
+              })
+            });
+            return false;
+          }
+          return true;
+        }}
       />
     ) : (
       <View style={{alignItems: 'center', justifyContent: 'center', flex: 1,}}>
