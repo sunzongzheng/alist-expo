@@ -6,15 +6,15 @@ import React, {
   useState
 } from 'react'
 import {WebView} from 'react-native-webview';
-import {NativeModules, View, Text, Image, Linking, ActivityIndicator} from "react-native";
+import {NativeModules, View, Linking, ActivityIndicator} from "react-native";
 import {useFocusEffect, useNavigation} from "expo-router";
-import noDataImage from '@/assets/images/无服务.png'
 import {useAppSelector} from "@/app/store";
 import axios from "axios";
 import sha256 from 'sha256'
 import Toast from "react-native-root-toast";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {Feather} from "@expo/vector-icons";
+import NoData from "@/components/NoData";
 
 const {Alist, AppInfo} = NativeModules
 
@@ -143,10 +143,7 @@ const AListWebview = forwardRef((props: AListWebViewProps, forwardedRef: Forward
         <ActivityIndicator color={'#2196F3'} size={'large'}/>
       </View>
     ) : (
-    <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', flex: 1, paddingBottom: 50,}}>
-      <Image source={noDataImage} style={{width: 200, height: 200}}/>
-      <Text>请先启动服务</Text>
-    </View>
+    <NoData text={'请先启动服务'}/>
   );
 })
 

@@ -1,20 +1,19 @@
 import {
   StyleSheet,
-  Image,
-  Platform,
   View,
-  Text,
   Switch,
   TouchableOpacity,
   Modal,
-  Pressable,
-  Linking, Touchable, TouchableWithoutFeedback, NativeModules
+  Linking, TouchableWithoutFeedback, NativeModules, useColorScheme
 } from 'react-native';
 import Ionicons from "@expo/vector-icons/Ionicons";
 import React, {useCallback, useEffect, useState} from "react";
 import {FontAwesome} from "@expo/vector-icons";
 import {useAppDispatch, useAppSelector} from "@/app/store";
 import {setBackgroundMode} from "@/app/store/setting";
+import ColorSchemeCard from "@/components/ColorSchemeCard";
+import Text from '@/components/ColorSchemeText'
+import {Colors} from "@/constants/Colors";
 
 const { AppInfo } = NativeModules;
 
@@ -23,6 +22,7 @@ export default function Setting() {
   const [version, setVersion] = useState('1.0')
   const backgroundMode = useAppSelector(state => state.setting.backgroundMode)
   const dispatch = useAppDispatch()
+  const colorScheme = useColorScheme()
 
   const showAbout = useCallback(() => {
     setModalVisible(true)
@@ -44,7 +44,7 @@ export default function Setting() {
   return (
     <View style={styles.container}>
       <Text style={styles.cardTitle}>通用</Text>
-      <View style={styles.card}>
+      <ColorSchemeCard>
         <View style={[styles.cardItem, styles.cardItemLarge]}>
           <View>
             <Text style={styles.itemTitle}>后台运行</Text>
@@ -59,10 +59,10 @@ export default function Setting() {
             value={backgroundMode}
           />
         </View>
-      </View>
+      </ColorSchemeCard>
       <Text style={[styles.cardTitle, styles.cardMarginTop]}>版本信息</Text>
-      <View style={styles.card}>
-        <View style={[styles.cardItem, styles.cardItemBorderBottom]}>
+      <ColorSchemeCard>
+        <View style={styles.cardItem}>
           <Text style={styles.itemTitle}>App版本</Text>
           <Text>{version}</Text>
         </View>
@@ -70,9 +70,9 @@ export default function Setting() {
           <Text style={styles.itemTitle}>AList版本</Text>
           <Text>3.35.0</Text>
         </View>
-      </View>
+      </ColorSchemeCard>
       <Text style={[styles.cardTitle, styles.cardMarginTop]}>关于</Text>
-      <View style={[styles.card]}>
+      <ColorSchemeCard>
         <TouchableOpacity onPress={showAbout}>
           <View style={styles.cardItem}>
               <Text style={styles.itemTitle}>关于</Text>
@@ -90,7 +90,7 @@ export default function Setting() {
             <FontAwesome name="telegram" size={24} color="#24a1de" />
           </View>
         </TouchableOpacity>
-      </View>
+      </ColorSchemeCard>
       <Modal
         animationType="fade"
         transparent={true}
@@ -98,7 +98,7 @@ export default function Setting() {
       >
         <TouchableWithoutFeedback onPress={() => setModalVisible(!modalVisible)}>
           <View style={styles.centeredView}>
-            <View style={styles.modalView}>
+            <View style={[styles.modalView, {backgroundColor: Colors[colorScheme ?? 'light'].background}]}>
               <Text style={styles.modalText}>本应用遵循AGPL3.0开源协议</Text>
               <TouchableOpacity onPress={() => Linking.openURL('https://github.com/sunzongzheng/alist-expo')}>
                 <Text style={styles.modalText}>alist-expo</Text>
@@ -141,12 +141,6 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     marginBottom: 12,
     paddingLeft: 14,
-  },
-  card: {
-    backgroundColor: 'white',
-    paddingHorizontal: 20,
-    borderRadius: 10,
-    position: 'relative',
   },
   cardItem: {
     display: 'flex',

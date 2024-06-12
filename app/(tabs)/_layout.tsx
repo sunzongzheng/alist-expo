@@ -4,7 +4,7 @@ import React, {useCallback, useEffect} from 'react';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
 import {appendLog} from "@/app/store/log";
-import {NativeEventEmitter, NativeModules} from "react-native";
+import {NativeEventEmitter, NativeModules, useColorScheme} from "react-native";
 import {useAppDispatch, useAppSelector} from "@/app/store";
 import {refreshIsRunning} from "@/app/store/server";
 import RNFS from 'react-native-fs'
@@ -14,8 +14,7 @@ const {Alist, HCKeepBGRunManager} = NativeModules;
 const eventEmitter = new NativeEventEmitter(Alist);
 
 export default function TabLayout() {
-  // const colorScheme = useColorScheme();
-  const colorScheme = 'light';
+  const colorScheme = useColorScheme();
   const dispatch = useAppDispatch();
   const backgroundMode = useAppSelector(state => state.setting.backgroundMode)
   const isRunning = useAppSelector(state => state.server.isRunning)
@@ -94,7 +93,7 @@ export default function TabLayout() {
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerStyle: {
-          backgroundColor: 'rgb(59, 112, 184)'
+          backgroundColor: Colors[colorScheme ?? 'light'].headerBackgroundColor,
         },
         headerTitleStyle: {
           fontSize: 20,

@@ -4,7 +4,6 @@ import {
   Platform,
   NativeModules,
   Button,
-  Text,
   View,
   Switch,
   NativeEventEmitter,
@@ -17,6 +16,8 @@ import {useAppDispatch, useAppSelector} from "@/app/store";
 import {refreshIsRunning} from "@/app/store/server";
 import Clipboard from '@react-native-clipboard/clipboard';
 import Toast from "react-native-root-toast";
+import Text from '@/components/ColorSchemeText'
+import ColorSchemeCard from "@/components/ColorSchemeCard";
 
 const {Alist} = NativeModules;
 const DEFAULT_PASSWORD = 'admin'
@@ -95,7 +96,7 @@ export default function HomeScreen() {
   return (
     <View style={styles.container}>
       <ScrollView style={{flex: 1, paddingHorizontal: 16,}} showsVerticalScrollIndicator={false}>
-        <View style={styles.card}>
+        <ColorSchemeCard>
           <View style={styles.cardItem}>
             <Text>服务状态：{isRunning ? '运行中' : '未运行'}</Text>
             <Switch
@@ -106,8 +107,8 @@ export default function HomeScreen() {
               value={isRunning}
             />
           </View>
-        </View>
-        <View style={[styles.card, styles.cardMarginTop]}>
+        </ColorSchemeCard>
+        <ColorSchemeCard style={styles.cardMarginTop}>
           <View style={styles.cardItem}>
             <Text style={styles.bold}>账号信息</Text>
           </View>
@@ -119,8 +120,8 @@ export default function HomeScreen() {
             <Text>密码</Text>
             <Text>{isRunning ? adminPwd : '请先启动服务'}</Text>
           </View>
-        </View>
-        <View style={[styles.card, styles.cardMarginTop]}>
+        </ColorSchemeCard>
+        <ColorSchemeCard style={styles.cardMarginTop}>
           <View style={styles.cardItem}>
             <Text style={styles.bold}>WebDAV信息</Text>
           </View>
@@ -153,7 +154,7 @@ export default function HomeScreen() {
             <Text>用户名/密码</Text>
             <Text>同“账号信息”</Text>
           </View>
-        </View>
+        </ColorSchemeCard>
         <Text style={styles.runningTip}>请保持App前台运行，否则服务可能不可用</Text>
       </ScrollView>
     </View>
@@ -181,11 +182,6 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     paddingBottom: 32,
     flex: 1,
-  },
-  card: {
-    backgroundColor: 'white',
-    paddingHorizontal: 20,
-    borderRadius: 10,
   },
   cardItem: {
     display: 'flex',

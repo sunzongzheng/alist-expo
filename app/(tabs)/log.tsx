@@ -1,11 +1,13 @@
 import React, {useLayoutEffect} from 'react'
-import {FlatList, Image, StyleSheet, Text, View} from "react-native";
+import {FlatList, StyleSheet, useColorScheme, View} from "react-native";
 import dayjs from 'dayjs'
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {useNavigation} from "expo-router";
 import {clearLogs, LogLevel} from "@/app/store/log";
-import noDataImage from "@/assets/images/无服务.png";
 import {useAppDispatch, useAppSelector} from "@/app/store";
+import NoData from "@/components/NoData";
+import {Colors} from "@/constants/Colors";
+import Text from '@/components/ColorSchemeText'
 
 
 const getLevelText = (level: LogLevel) => {
@@ -14,7 +16,7 @@ const getLevelText = (level: LogLevel) => {
     [LogLevel.warn]: 'warn',
     [LogLevel.info]: 'info',
     [LogLevel.debug]: 'debug'
-  }[level]
+  }[level] as 'error'|'warn'|'info'|'debug'
 }
 export default function Log() {
   const logs = useAppSelector(
@@ -22,6 +24,7 @@ export default function Log() {
   );
   const navigation = useNavigation()
   const dispatch = useAppDispatch()
+  const colorScheme = useColorScheme()
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -41,10 +44,17 @@ export default function Log() {
       <FlatList
         data={logs}
         renderItem={({item}) => {
-          const levelText = getLevelText(item.level)
+          const levelText = getLevelText(item.level) ?? 'unknow'
+          const color: string = {
+            error: 'red',
+            warn: '#faad14',
+            info: Colors[colorScheme ?? 'light'].text,
+            debug: 'gray',
+            unknow: '#faad14',
+          }[levelText]
           return (
             <View style={styles.item}>
-              <Text style={[styles.level, styles[levelText] || 'unknow']}>{levelText}</Text>
+              <Text style={[styles.level, {color}]}>{levelText}</Text>
               <View style={{flex: 1}}>
                 <Text style={styles.message}>{item.message}</Text>
                 <Text style={{color: 'gray'}}>{dayjs(item.time).format('MM-DD HH:mm:ss')}</Text>
@@ -55,10 +65,7 @@ export default function Log() {
       />
     </View>
   ) : (
-    <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', flex: 1, paddingBottom: 50,}}>
-      <Image source={noDataImage} style={{width: 200, height: 200}}/>
-      <Text>暂无日志</Text>
-    </View>
+    <NoData text={'暂无日志'}/>
   )
 }
 
@@ -85,19 +92,4 @@ const styles:Record<string, any> = StyleSheet.create({
     fontSize: 16,
     marginBottom: 4,
   },
-  error: {
-    color: 'red'
-  },
-  warn: {
-    color: '#faad14'
-  },
-  info: {
-    color: 'rgba(0, 0, 0, 0.88)'
-  },
-  debug: {
-    color: 'gray'
-  },
-  unknow: {
-    color: '#faad14'
-  }
 })
