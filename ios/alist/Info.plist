@@ -19,7 +19,7 @@
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.3</string>
+	<string>1.4</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -83,17 +83,17 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
-    <array>
-        <string>iina</string>
-        <string>potplayer</string>
-        <string>vlc</string>
-        <string>nplayer-http</string>
-        <string>omniplayer</string>
-        <string>figplayer</string>
-        <string>infuse</string>
-        <string>intent</string>
-        <string>filebox</string>
-        <string>open-vidhub</string>
-    </array>
+	<array>
+		<string>iina</string>
+		<string>potplayer</string>
+		<string>vlc</string>
+		<string>nplayer-http</string>
+		<string>omniplayer</string>
+		<string>figplayer</string>
+		<string>infuse</string>
+		<string>intent</string>
+		<string>filebox</string>
+		<string>open-vidhub</string>
+	</array>
 </dict>
 </plist>
