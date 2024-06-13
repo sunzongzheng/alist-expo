@@ -137,6 +137,7 @@ const AListWebview = forwardRef((props: AListWebViewProps, forwardedRef: Forward
         onFileDownload={({ nativeEvent: { downloadUrl } }) => {
           Linking.openURL(downloadUrl)
         }}
+        onContentProcessDidTerminate={() => webviewRef.current?.reload()}
       />
     ) : (
       <View style={{alignItems: 'center', justifyContent: 'center', flex: 1,}}>
