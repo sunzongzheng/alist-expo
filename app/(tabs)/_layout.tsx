@@ -9,6 +9,7 @@ import {useAppDispatch, useAppSelector} from "@/app/store";
 import {refreshIsRunning} from "@/app/store/server";
 import RNFS from 'react-native-fs'
 import useAppInActive from "@/hooks/useAppInActive";
+import axios from "axios";
 
 const {Alist, HCKeepBGRunManager} = NativeModules;
 const eventEmitter = new NativeEventEmitter(Alist);
@@ -42,6 +43,20 @@ export default function TabLayout() {
       console.log('已更新配置文件')
     } catch (e) {
       console.error(e)
+    }
+  }, [])
+
+  const checkIsRunning = useCallback(async () => {
+    try {
+      await axios.get('http://127.0.0.1:5244/ping', {
+        timeout: 1000
+      })
+      console.log('检查服务：可用')
+    } catch (e) {
+      console.log('检查服务：不可用')
+      // 如果服务实际上不可用，则自动关闭，更新状态
+      await Alist.stop()
+      dispatch(refreshIsRunning())
     }
   }, [])
 
@@ -87,6 +102,13 @@ export default function TabLayout() {
       }
     }
   }, [appInActive, backgroundMode, isRunning])
+
+  useEffect(() => {
+    if (appInActive && isRunning) {
+      // 切到前台时，如果服务处于运行状态，通过接口再检测一下服务是否可用，防止服务进程被系统杀掉
+      checkIsRunning()
+    }
+  }, [appInActive, isRunning, checkIsRunning]);
 
   return (
     <Tabs
