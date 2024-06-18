@@ -76,7 +76,8 @@ export default function HomeScreen() {
   useEffect(() => {
     return addEventListener(state => {
       // @ts-ignore
-      setIP(state.details?.ipAddress)
+      const ip = state.details?.ipAddress
+      setIP(ip === '0.0.0.0' ? null : ip)
     });
   }, []);
 
