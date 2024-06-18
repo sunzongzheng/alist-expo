@@ -2,8 +2,11 @@ import React, {useEffect, useState} from 'react'
 import {StyleSheet, View, Image, Text} from "react-native";
 import QRCode from 'qrcode-generator';
 import {addEventListener} from "@react-native-community/netinfo";
+import {useAppSelector} from "@/app/store";
+import NoData from "@/components/NoData";
 
 export default function Manage() {
+  const isRunning = useAppSelector(state => state.server.isRunning)
   const [imageUrl, setImageUrl] = useState('')
   const [ip, setIP] = useState(null)
 
@@ -23,7 +26,7 @@ export default function Manage() {
     });
   }, []);
 
-  return (
+  return isRunning ? (
     <View style={styles.centeredView}>
       <View style={[styles.modalView]}>
         {imageUrl ? <Image
@@ -33,6 +36,8 @@ export default function Manage() {
         <Text style={{fontSize: 36}}>请使用手机扫码访问管理页</Text>
       </View>
     </View>
+  ) : (
+    <NoData text={'请先启动服务'}/>
   )
 }
 
