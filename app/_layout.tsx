@@ -21,17 +21,20 @@ const persistor = persistStore(store);
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
+  const [loaded, error] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
 
   useEffect(() => {
-    if (loaded) {
+    if (loaded || error) {
       SplashScreen.hideAsync();
+      if (error) {
+        console.warn(`Error in loading fonts: ${error}`);
+      }
     }
-  }, [loaded]);
+  }, [loaded, error]);
 
-  if (!loaded) {
+  if (!loaded && !error) {
     return null;
   }
 
@@ -41,8 +44,10 @@ export default function RootLayout() {
         <PersistGate loading={null} persistor={persistor}>
           <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
             <Stack>
-              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }}/>
               <Stack.Screen name="+not-found" />
+              <Stack.Screen name="join-group" options={{ headerShown: false }}/>
+              <Stack.Screen name="about" options={{ headerShown: false }}/>
             </Stack>
           </ThemeProvider>
         </PersistGate>

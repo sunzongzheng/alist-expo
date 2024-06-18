@@ -1,0 +1,18 @@
+{
+  "images" : [
+    {
+      "filename" : "alist-2320*720.png",
+      "idiom" : "tv",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "alist-4640_1440.png",
+      "idiom" : "tv",
+      "scale" : "2x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

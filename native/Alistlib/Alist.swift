@@ -49,7 +49,11 @@ class Alist: RCTEventEmitter {
   @objc func `init`(_ resolve: @escaping RCTPromiseResolveBlock,
                             rejecter reject: @escaping RCTPromiseRejectBlock) {
 
+    #if os(tvOS)
+    let documentsDirectory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
+    #else
     let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    #endif
 
     let eventListener = EventListener(
       onProcessExit: { [weak self] (body) in

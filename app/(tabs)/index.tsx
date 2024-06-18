@@ -1,23 +1,17 @@
 import {
-  Image,
   StyleSheet,
-  Platform,
   NativeModules,
-  Button,
   View,
-  Switch,
-  NativeEventEmitter,
-  ScrollView, TouchableOpacity
+  TVTextScrollView, TouchableOpacity,
 } from 'react-native';
 import React, {useCallback, useEffect, useState} from "react";
 import {useFocusEffect} from "expo-router";
 import { addEventListener } from "@react-native-community/netinfo";
 import {useAppDispatch, useAppSelector} from "@/app/store";
 import {refreshIsRunning} from "@/app/store/server";
-import Clipboard from '@react-native-clipboard/clipboard';
-import Toast from "react-native-root-toast";
 import Text from '@/components/ColorSchemeText'
 import ColorSchemeCard from "@/components/ColorSchemeCard";
+import CardItem from '@/components/CardItem.tv'
 
 const {Alist} = NativeModules;
 const DEFAULT_PASSWORD = 'admin'
@@ -73,13 +67,6 @@ export default function HomeScreen() {
     return Alist.setAdminPassword(pwd)
   }, [])
 
-  const copy = useCallback((ip: string) => {
-    Clipboard.setString(ip);
-    Toast.show('已复制到剪切板', {
-      position: Toast.positions.CENTER
-    })
-  }, [])
-
   useFocusEffect(React.useCallback(() => {
     if (isRunning) {
       updateAdminInfo()
@@ -95,68 +82,56 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <ScrollView style={{flex: 1, paddingHorizontal: 16,}} showsVerticalScrollIndicator={false}>
+      <View style={{flex: 1, paddingHorizontal: 16,}}>
         <ColorSchemeCard>
-          <View style={styles.cardItem}>
-            <Text>服务状态：{isRunning ? '运行中' : '未运行'}</Text>
-            <Switch
-              trackColor={{false: '#767577', true: '#81b0ff'}}
-              thumbColor={isRunning ? '#f5dd4b' : '#f4f3f4'}
-              ios_backgroundColor="#3e3e3e"
-              onValueChange={toggleSwitch}
-              value={isRunning}
-            />
-          </View>
+          <CardItem style={styles.cardItem} onPress={toggleSwitch}>
+              <Text>服务状态：{isRunning ? '运行中' : '未运行'}</Text>
+              <Text>{isRunning ? '点击关闭' : '点击启动'}</Text>
+          </CardItem>
         </ColorSchemeCard>
-        <ColorSchemeCard style={styles.cardMarginTop}>
-          <View style={styles.cardItem}>
-            <Text style={styles.bold}>账号信息</Text>
-          </View>
-          <View style={[styles.cardItem]}>
-            <Text>用户名</Text>
-            <Text>{isRunning ? adminUsername : '请先启动服务'}</Text>
-          </View>
-          <View style={[styles.cardItem]}>
-            <Text>密码</Text>
-            <Text>{isRunning ? adminPwd : '请先启动服务'}</Text>
-          </View>
-        </ColorSchemeCard>
-        <ColorSchemeCard style={styles.cardMarginTop}>
-          <View style={styles.cardItem}>
-            <Text style={styles.bold}>WebDAV信息</Text>
-          </View>
-          <View style={[styles.cardItem, ip ? styles.multiRow : null]}>
-            <Text>服务器地址</Text>
-            <View style={{justifyContent: 'center', alignItems: 'flex-end'}}>
-              {ip ? (
-                <TouchableOpacity onPress={() => copy(ip)}>
-                  <Text style={{textAlign: 'right', marginBottom: 8}}>{ip}（局域网访问）</Text>
-                </TouchableOpacity>
-              ) : null }
-              <TouchableOpacity onPress={() => copy('127.0.0.1')}>
-                <Text style={{textAlign: 'right'}}>127.0.0.1（限本机访问）</Text>
-              </TouchableOpacity>
+        <TVTextScrollView style={{flex: 1}}>
+          <ColorSchemeCard style={styles.cardMarginTop}>
+            <View style={styles.cardItem}>
+              <Text style={styles.bold}>账号信息</Text>
             </View>
-          </View>
-          <View style={[styles.cardItem]}>
-            <Text>端口</Text>
-            <TouchableOpacity onPress={() => copy('5244')}>
+            <View style={[styles.cardItem]}>
+              <Text>用户名</Text>
+              <Text>{isRunning ? adminUsername : '请先启动服务'}</Text>
+            </View>
+            <View style={[styles.cardItem]}>
+              <Text>密码</Text>
+              <Text>{isRunning ? adminPwd : '请先启动服务'}</Text>
+            </View>
+          </ColorSchemeCard>
+          <ColorSchemeCard style={styles.cardMarginTop}>
+            <View style={styles.cardItem}>
+              <Text style={styles.bold}>WebDAV信息</Text>
+            </View>
+            <View style={[styles.cardItem, ip ? styles.multiRow : null]}>
+              <Text>服务器地址</Text>
+              <View style={{justifyContent: 'center', alignItems: 'flex-end'}}>
+                {ip ? (
+                  <Text style={{textAlign: 'right', marginBottom: 8}}>{ip}（局域网访问）</Text>
+                ) : null }
+                <Text style={{textAlign: 'right'}}>127.0.0.1（限本机访问）</Text>
+              </View>
+            </View>
+            <View style={[styles.cardItem]}>
+              <Text>端口</Text>
               <Text>5244</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={[styles.cardItem]}>
-            <Text>路径</Text>
-            <TouchableOpacity onPress={() => copy('dav')}>
+            </View>
+            <View style={[styles.cardItem]}>
+              <Text>路径</Text>
               <Text>dav</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={[styles.cardItem]}>
-            <Text>用户名/密码</Text>
-            <Text>同“账号信息”</Text>
-          </View>
-        </ColorSchemeCard>
-        <Text style={styles.runningTip}>请保持App前台运行，否则服务可能不可用</Text>
-      </ScrollView>
+            </View>
+            <View style={[styles.cardItem]}>
+              <Text>用户名/密码</Text>
+              <Text>同“账号信息”</Text>
+            </View>
+          </ColorSchemeCard>
+          <Text style={styles.runningTip}>请保持App前台运行，否则服务可能不可用</Text>
+        </TVTextScrollView>
+      </View>
     </View>
   );
 }
@@ -188,7 +163,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    height: 50,
+    height: 100,
   },
   multiRow: {
     minHeight: 50,

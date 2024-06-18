@@ -2,6 +2,7 @@ import CoreServices
 import KSPlayer
 import UIKit
 
+#if os(iOS)
 class AudioView: VideoView {
 
     override init() {
@@ -57,3 +58,4 @@ class AudioView: VideoView {
       fatalError("init(coder:) has not been implemented")
     }
 }
+#endif

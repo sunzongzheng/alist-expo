@@ -2,6 +2,7 @@ import CoreServices
 import KSPlayer
 import UIKit
 
+#if os(iOS)
 class VideoView: UIView, PlayerControllerDelegate {
     let playerView = IOSView()
 
@@ -75,3 +76,4 @@ class VideoView: UIView, PlayerControllerDelegate {
       fatalError("init(coder:) has not been implemented")
     }
 }
+#endif

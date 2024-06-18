@@ -2,6 +2,7 @@ import Foundation
 import KSPlayer
 import AVKit
 
+#if os(iOS)
 class IOSView: IOSVideoPlayerView {
   public var fullscreenCallback: ((_ isFullScreen: Bool) -> Void)?
   override func updateUI(isFullScreen: Bool) {
@@ -9,3 +10,4 @@ class IOSView: IOSVideoPlayerView {
       self.fullscreenCallback!(isFullScreen)
   }
 }
+#endif

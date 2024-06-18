@@ -1,10 +1,7 @@
 import {
   StyleSheet,
   View,
-  Switch,
-  TouchableOpacity,
-  Modal,
-  Linking, TouchableWithoutFeedback, NativeModules, useColorScheme
+  NativeModules, useColorScheme,
 } from 'react-native';
 import Ionicons from "@expo/vector-icons/Ionicons";
 import React, {useCallback, useEffect, useState} from "react";
@@ -13,20 +10,20 @@ import {useAppDispatch, useAppSelector} from "@/app/store";
 import {setBackgroundMode} from "@/app/store/setting";
 import ColorSchemeCard from "@/components/ColorSchemeCard";
 import Text from '@/components/ColorSchemeText'
-import {Colors} from "@/constants/Colors";
+import {useTextStyles} from "@/hooks/useTextStyles";
+import CardItem from '@/components/CardItem.tv'
+import {router} from "expo-router";
+import {useScale} from "@/hooks/useScale";
 
-const { AppInfo } = NativeModules;
+const {AppInfo} = NativeModules;
 
 export default function Setting() {
-  const [modalVisible, setModalVisible] = useState(false);
   const [version, setVersion] = useState('1.0')
   const backgroundMode = useAppSelector(state => state.setting.backgroundMode)
   const dispatch = useAppDispatch()
+  const textStyles = useTextStyles();
   const colorScheme = useColorScheme()
-
-  const showAbout = useCallback(() => {
-    setModalVisible(true)
-  }, [setModalVisible])
+  const scale = useScale()
 
   const getAppVersion = useCallback(async () => {
     try {
@@ -43,24 +40,27 @@ export default function Setting() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.cardTitle}>通用</Text>
+      <Text style={[styles.cardTitle, {fontSize: textStyles.default.fontSize}]}>通用</Text>
       <ColorSchemeCard>
-        <View style={[styles.cardItem, styles.cardItemLarge]}>
-          <View>
-            <Text style={styles.itemTitle}>后台运行</Text>
-            <Text style={styles.itemDescription}>开启后服务常驻后台，息屏也可访问服务</Text>
-          </View>
-          <Switch
-            trackColor={{false: '#767577', true: '#81b0ff'}}
-            ios_backgroundColor="#3e3e3e"
-            onValueChange={(value) => {
-              dispatch(setBackgroundMode(value))
-            }}
-            value={backgroundMode}
-          />
-        </View>
+        <CardItem
+          style={[styles.cardItem, styles.cardItemLarge]}
+          onPress={() => dispatch(setBackgroundMode(!backgroundMode))}
+          childrenNodes={(focused) => {
+            const color = focused ? colorScheme === 'dark' ? '#bbb' : '#999' : 'gray'
+            return (
+              <>
+                <View>
+                  <Text style={styles.itemTitle}>后台运行</Text>
+                  <Text
+                    style={[styles.itemDescription, {fontSize: 14 * scale, color}]}>开启后服务常驻后台，息屏也可访问服务</Text>
+                </View>
+                <Text>{backgroundMode ? '点击关闭' : '点击开启'}</Text>
+              </>
+            )
+          }}
+        />
       </ColorSchemeCard>
-      <Text style={[styles.cardTitle, styles.cardMarginTop]}>版本信息</Text>
+      <Text style={[styles.cardTitle, {fontSize: textStyles.default.fontSize}, styles.cardMarginTop]}>版本信息</Text>
       <ColorSchemeCard>
         <View style={styles.cardItem}>
           <Text style={styles.itemTitle}>App版本</Text>
@@ -71,45 +71,22 @@ export default function Setting() {
           <Text>3.35.0</Text>
         </View>
       </ColorSchemeCard>
-      <Text style={[styles.cardTitle, styles.cardMarginTop]}>关于</Text>
+      <Text style={[styles.cardTitle, {fontSize: textStyles.default.fontSize}, styles.cardMarginTop]}>关于</Text>
       <ColorSchemeCard>
-        <TouchableOpacity onPress={showAbout}>
-          <View style={styles.cardItem}>
-              <Text style={styles.itemTitle}>关于</Text>
-              <Ionicons
-                name={'chevron-forward-outline'}
-                color={'#D1D1D6'}
-                containerStyle={{ alignSelf: 'center' }}
-                size={16}
-              />
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => Linking.openURL('https://t.me/+euPFHEllnjRhYThl')}>
-          <View style={styles.cardItem}>
-            <Text style={styles.itemTitle}>加入交流群</Text>
-            <FontAwesome name="telegram" size={24} color="#24a1de" />
-          </View>
-        </TouchableOpacity>
+        <CardItem onPress={() => router.push('/about')}>
+          <Text style={styles.itemTitle}>关于</Text>
+          <Ionicons
+            name={'chevron-forward-outline'}
+            color={'#D1D1D6'}
+            containerStyle={{alignSelf: 'center'}}
+            size={32}
+          />
+        </CardItem>
+        <CardItem onPress={() => router.push('/join-group')}>
+          <Text style={styles.itemTitle}>加入交流群</Text>
+          <FontAwesome name="telegram" size={24} color="#24a1de"/>
+        </CardItem>
       </ColorSchemeCard>
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={modalVisible}
-      >
-        <TouchableWithoutFeedback onPress={() => setModalVisible(!modalVisible)}>
-          <View style={styles.centeredView}>
-            <View style={[styles.modalView, {backgroundColor: Colors[colorScheme ?? 'light'].background}]}>
-              <Text style={styles.modalText}>本应用遵循AGPL3.0开源协议</Text>
-              <TouchableOpacity onPress={() => Linking.openURL('https://github.com/sunzongzheng/alist-expo')}>
-                <Text style={styles.modalText}>alist-expo</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => Linking.openURL('https://github.com/sunzongzheng/alist-ios')}>
-                <Text style={styles.modalText}>alist-ios</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </TouchableWithoutFeedback>
-      </Modal>
     </View>
   );
 }
@@ -137,7 +114,6 @@ const styles = StyleSheet.create({
   },
   cardTitle: {
     color: 'gray',
-    fontSize: 14,
     textAlign: 'left',
     marginBottom: 12,
     paddingLeft: 14,
@@ -147,10 +123,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    height: 50,
+    height: 100,
   },
   cardItemLarge: {
-    height: 65,
+    height: 130,
   },
   cardItemBorderBottom: {
     borderBottomWidth: 1,
@@ -203,12 +179,8 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     textAlign: 'center',
   },
-  itemTitle: {
-    fontSize: 15,
-  },
+  itemTitle: {},
   itemDescription: {
-    fontSize: 12,
-    color: 'gray',
-    marginTop: 4,
+    marginTop: 12,
   }
 });

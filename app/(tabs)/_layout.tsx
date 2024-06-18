@@ -1,21 +1,25 @@
-import {Tabs, useFocusEffect} from 'expo-router';
+import {useFocusEffect} from 'expo-router';
 import React, {useCallback, useEffect} from 'react';
 
-import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
 import {appendLog} from "@/app/store/log";
-import {NativeEventEmitter, NativeModules, useColorScheme} from "react-native";
+import {NativeEventEmitter, NativeModules, useColorScheme, Platform, Pressable} from "react-native";
 import {useAppDispatch, useAppSelector} from "@/app/store";
 import {refreshIsRunning} from "@/app/store/server";
 import RNFS from 'react-native-fs'
 import useAppInActive from "@/hooks/useAppInActive";
 import axios from "axios";
+import {BottomTabBarButtonProps} from "@react-navigation/bottom-tabs";
+import {useTextStyles} from "@/hooks/useTextStyles";
+import TabsNavigator from '@/components/TabNavigator'
 
 const {Alist, HCKeepBGRunManager} = NativeModules;
 const eventEmitter = new NativeEventEmitter(Alist);
+const {isTV} = Platform
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const textStyles = useTextStyles();
   const dispatch = useAppDispatch();
   const backgroundMode = useAppSelector(state => state.setting.backgroundMode)
   const isRunning = useAppSelector(state => state.server.isRunning)
@@ -32,14 +36,15 @@ export default function TabLayout() {
     解法：这里对config文件中存储的文件路径进行处理，替换为新的Document目录
      */
     try {
-      const configPath = RNFS.DocumentDirectoryPath + '/config.json'
+      const directoryPath = isTV ? RNFS.CachesDirectoryPath : RNFS.DocumentDirectoryPath
+      const configPath = directoryPath + '/config.json'
       if (!await RNFS.exists(configPath)) return
       const configData = await RNFS.readFile(configPath)
-      if (configData.includes(RNFS.DocumentDirectoryPath)) return
-      let patternString = RNFS.DocumentDirectoryPath.replace(/\/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\//, '/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}/')
+      if (configData.includes(directoryPath)) return
+      let patternString = directoryPath.replace(/\/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\//, '/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}/')
       const regexPattern = new RegExp(patternString, 'g');
-      const newConfigData = configData.replace(regexPattern, RNFS.DocumentDirectoryPath)
-      await RNFS.writeFile(RNFS.DocumentDirectoryPath + `/config.json`, newConfigData)
+      const newConfigData = configData.replace(regexPattern, directoryPath)
+      await RNFS.writeFile(directoryPath + `/config.json`, newConfigData)
       console.log('已更新配置文件')
     } catch (e) {
       console.error(e)
@@ -59,6 +64,21 @@ export default function TabLayout() {
       dispatch(refreshIsRunning())
     }
   }, [])
+
+  const tabBarButton = (props: BottomTabBarButtonProps) => {
+    const style: any = props.style ?? {};
+    return (
+      <Pressable
+        {...props}
+        style={({ pressed, focused }) => [
+          style,
+          {
+            opacity: pressed || focused ? 0.6 : 1.0,
+          },
+        ]}
+      />
+    );
+  };
 
   useEffect(() => {
     const onLog = eventEmitter.addListener('onLog', (logInfo) => {
@@ -111,9 +131,14 @@ export default function TabLayout() {
   }, [appInActive, isRunning, checkIsRunning]);
 
   return (
-    <Tabs
+    <TabsNavigator.Navigator
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarStyle: {
+          height: textStyles.title.lineHeight * 2,
+          marginBottom: 0,
+        },
+        headerShown: false,
         headerStyle: {
           backgroundColor: Colors[colorScheme ?? 'light'].headerBackgroundColor,
         },
@@ -122,52 +147,52 @@ export default function TabLayout() {
         },
         headerTintColor: 'white',
       }}>
-      <Tabs.Screen
+      <TabsNavigator.Screen
         name="index"
         options={{
           headerTitle: 'AList',
           title: '首页',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
-          ),
+          tabBarButton,
+          tabBarLabelStyle: textStyles.default,
         }}
+        component={require('./index').default}
       />
-      <Tabs.Screen
-        name="browse"
+      <TabsNavigator.Screen
+        name="files"
         options={{
           title: '浏览',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'folder' : 'folder-outline'} color={color} />
-          ),
+          tabBarButton,
+          tabBarLabelStyle: textStyles.default,
         }}
+        component={require('./files').default}
       />
-      <Tabs.Screen
+      <TabsNavigator.Screen
         name="manage"
         options={{
           title: '管理',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'layers' : 'layers-outline'} color={color} />
-          ),
+          tabBarButton,
+          tabBarLabelStyle: textStyles.default,
         }}
+        component={require('./manage').default}
       />
-      <Tabs.Screen
+      <TabsNavigator.Screen
         name="log"
         options={{
           title: '日志',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'reader' : 'reader-outline'} color={color} />
-          ),
+          tabBarButton,
+          tabBarLabelStyle: textStyles.default,
         }}
+        component={require('./log').default}
       />
-      <Tabs.Screen
+      <TabsNavigator.Screen
         name="setting"
         options={{
           title: '设置',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'settings' : 'settings-outline'} color={color} />
-          ),
+          tabBarButton,
+          tabBarLabelStyle: textStyles.default,
         }}
+        component={require('./setting').default}
       />
-    </Tabs>
+    </TabsNavigator.Navigator>
   );
 }

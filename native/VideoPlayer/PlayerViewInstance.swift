@@ -1,5 +1,6 @@
 import KSPlayer
 
+#if os(iOS)
 @objc(PlayerViewInstance)
 public class PlayerViewInstance: NSObject {
     static weak var detailView: VideoView?
@@ -19,3 +20,4 @@ public class PlayerViewInstance: NSObject {
       }
     }
 }
+#endif
