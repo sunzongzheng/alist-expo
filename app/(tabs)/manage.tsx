@@ -8,7 +8,7 @@ export default function Manage() {
   const [ip, setIP] = useState(null)
 
   useEffect(() => {
-    const typeNumber = 5;
+    const typeNumber = 6;
     const errorCorrectionLevel = 'L';
     const qr = QRCode(typeNumber, errorCorrectionLevel);
     qr.addData(`http://${ip}:5244`);
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.8)'
+    paddingBottom: 100,
   },
   modalView: {
     backgroundColor: 'white',

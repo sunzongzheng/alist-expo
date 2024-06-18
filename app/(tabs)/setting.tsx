@@ -79,12 +79,12 @@ export default function Setting() {
             name={'chevron-forward-outline'}
             color={'#D1D1D6'}
             containerStyle={{alignSelf: 'center'}}
-            size={32}
+            size={36}
           />
         </CardItem>
         <CardItem onPress={() => router.push('/join-group')}>
           <Text style={styles.itemTitle}>加入交流群</Text>
-          <FontAwesome name="telegram" size={24} color="#24a1de"/>
+          <FontAwesome name="telegram" size={36} color="#24a1de"/>
         </CardItem>
       </ColorSchemeCard>
     </View>
