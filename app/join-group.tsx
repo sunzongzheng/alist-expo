@@ -21,7 +21,7 @@ export default function JoinGroup() {
           source={{uri: imageUrl}}
           style={styles.image}
         /> : null}
-        <Text style={{fontSize: 36}}>请扫码打开加群链接</Text>
+        <Text style={{fontSize: 30, marginTop: -16, marginBottom: 12}}>请扫码打开加群链接</Text>
       </View>
     </View>
   )

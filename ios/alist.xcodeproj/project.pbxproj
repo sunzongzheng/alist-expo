@@ -34,7 +34,6 @@
 		2B79A7282C1C374800DE3BD6 /* libresolv.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B79A7262C1C374800DE3BD6 /* libresolv.9.tbd */; };
 		2B79A7292C1C374800DE3BD6 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B79A7272C1C374800DE3BD6 /* libresolv.tbd */; };
 		2B79A72D2C1C376F00DE3BD6 /* Alistlib.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B79A72C2C1C376F00DE3BD6 /* Alistlib.xcframework */; };
-		2B79A73A2C1C97E800DE3BD6 /* 动力车车 - 第一滴泪.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2B79A7392C1C97E800DE3BD6 /* 动力车车 - 第一滴泪.mp3 */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
 		468A1A288754506A406CD1D3 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 8EAE05D8FA88EA05D6C8EC26 /* PrivacyInfo.xcprivacy */; };
 		AD4854D29898EB34BCAEE92F /* Pods_alist.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98C0F293470667B1BCF797BE /* Pods_alist.framework */; };
@@ -76,7 +75,6 @@
 		2B79A7272C1C374800DE3BD6 /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 		2B79A72A2C1C375000DE3BD6 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = Platforms/AppleTVSimulator.platform/Developer/SDKs/AppleTVSimulator17.2.sdk/System/Library/Frameworks/IOKit.framework; sourceTree = DEVELOPER_DIR; };
 		2B79A72C2C1C376F00DE3BD6 /* Alistlib.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Alistlib.xcframework; path = alist/Alistlib.xcframework; sourceTree = "<group>"; };
-		2B79A7392C1C97E800DE3BD6 /* 动力车车 - 第一滴泪.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "动力车车 - 第一滴泪.mp3"; path = "../../../../Music/网易云音乐/动力车车 - 第一滴泪.mp3"; sourceTree = "<group>"; };
 		6BE61D7CE33744BB9BB7131E /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "alist/noop-file.swift"; sourceTree = "<group>"; };
 		6C2E3173556A471DD304B334 /* Pods-alist.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-alist.debug.xcconfig"; path = "Target Support Files/Pods-alist/Pods-alist.debug.xcconfig"; sourceTree = "<group>"; };
 		7A4D352CD337FB3A3BF06240 /* Pods-alist.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-alist.release.xcconfig"; path = "Target Support Files/Pods-alist/Pods-alist.release.xcconfig"; sourceTree = "<group>"; };
@@ -174,7 +172,6 @@
 		2B79A70F2C1C369700DE3BD6 /* BGRunManager */ = {
 			isa = PBXGroup;
 			children = (
-				2B79A7392C1C97E800DE3BD6 /* 动力车车 - 第一滴泪.mp3 */,
 				2B79A7102C1C369700DE3BD6 /* HCKeepBGRunManager.m */,
 				2B79A7112C1C369700DE3BD6 /* HCKeepBGRunManager.swift */,
 				2B79A7122C1C369700DE3BD6 /* jm.mp3 */,
@@ -330,7 +327,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
-				2B79A73A2C1C97E800DE3BD6 /* 动力车车 - 第一滴泪.mp3 in Resources */,
 				2B79A7232C1C369700DE3BD6 /* jm.mp3 in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,

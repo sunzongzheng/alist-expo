@@ -40,6 +40,7 @@ class VideoPlayerViewController: UIViewController, VideoPlayerProtocol {
         ])
         view.layoutIfNeeded()
         playerView.becomeFirstResponder()
+        playerView.backgroundColor = .black
         playerView.delegate = self
         playerView.toolBar.playButton.isSelected = true
         playerView.replayButton.isHidden = true
@@ -47,27 +48,27 @@ class VideoPlayerViewController: UIViewController, VideoPlayerProtocol {
         playerView.loadingIndector.startAnimating()
         playerView.toolBar.pipButton.isHidden = true
       
-      // 遥控器事件
-      // play/puase
-      let playPauseRecognizer = UITapGestureRecognizer(target: self, action: #selector(playPause))
-      playPauseRecognizer.allowedPressTypes = [NSNumber(value:UIPress.PressType.playPause.rawValue)]
-      self.view.addGestureRecognizer(playPauseRecognizer)
-      // 返回/menu
-      let menuRecognizer = UITapGestureRecognizer(target: self, action: #selector(menu))
-      menuRecognizer.allowedPressTypes = [NSNumber(value:UIPress.PressType.menu.rawValue)]
-      self.view.addGestureRecognizer(menuRecognizer)
-      // right
-      let rightRecognizer = UITapGestureRecognizer(target: self, action: #selector(right))
-      rightRecognizer.allowedPressTypes = [NSNumber(value:UIPress.PressType.rightArrow.rawValue)]
-      self.view.addGestureRecognizer(rightRecognizer)
-      // left
-      let leftRecognizer = UITapGestureRecognizer(target: self, action: #selector(left))
-      leftRecognizer.allowedPressTypes = [NSNumber(value:UIPress.PressType.leftArrow.rawValue)]
-      self.view.addGestureRecognizer(leftRecognizer)
-      // select
-      let selectRecognizer = UITapGestureRecognizer(target: self, action: #selector(select2))
-      selectRecognizer.allowedPressTypes = [NSNumber(value:UIPress.PressType.select.rawValue)]
-      self.view.addGestureRecognizer(selectRecognizer)
+        // 遥控器事件
+        // play/puase
+        let playPauseRecognizer = UITapGestureRecognizer(target: self, action: #selector(playPause))
+        playPauseRecognizer.allowedPressTypes = [NSNumber(value:UIPress.PressType.playPause.rawValue)]
+        self.view.addGestureRecognizer(playPauseRecognizer)
+        // 返回/menu
+        let menuRecognizer = UITapGestureRecognizer(target: self, action: #selector(menu))
+        menuRecognizer.allowedPressTypes = [NSNumber(value:UIPress.PressType.menu.rawValue)]
+        self.view.addGestureRecognizer(menuRecognizer)
+        // right
+        let rightRecognizer = UITapGestureRecognizer(target: self, action: #selector(right))
+        rightRecognizer.allowedPressTypes = [NSNumber(value:UIPress.PressType.rightArrow.rawValue)]
+        self.view.addGestureRecognizer(rightRecognizer)
+        // left
+        let leftRecognizer = UITapGestureRecognizer(target: self, action: #selector(left))
+        leftRecognizer.allowedPressTypes = [NSNumber(value:UIPress.PressType.leftArrow.rawValue)]
+        self.view.addGestureRecognizer(leftRecognizer)
+        // select
+        let selectRecognizer = UITapGestureRecognizer(target: self, action: #selector(select2))
+        selectRecognizer.allowedPressTypes = [NSNumber(value:UIPress.PressType.select.rawValue)]
+        self.view.addGestureRecognizer(selectRecognizer)
     }
 
     override func viewWillDisappear(_ animated: Bool) {

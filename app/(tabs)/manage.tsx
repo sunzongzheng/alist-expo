@@ -33,7 +33,7 @@ export default function Manage() {
           source={{uri: imageUrl}}
           style={styles.image}
         /> : null}
-        <Text style={{fontSize: 36}}>请使用手机扫码访问管理页</Text>
+        <Text style={{fontSize: 30, marginTop: -16, marginBottom: 12}}>请使用手机扫码访问管理页</Text>
       </View>
     </View>
   ) : (
