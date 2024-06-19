@@ -13,6 +13,8 @@
 		2B5C1E9D2C2091B500A6DFEA /* VideoPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5C1E9C2C2091B500A6DFEA /* VideoPlayerViewController.swift */; };
 		2B5C1ED12C21244300A6DFEA /* AudioPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5C1ED02C21244300A6DFEA /* AudioPlayerViewController.swift */; };
 		2B5C1ED72C2151CB00A6DFEA /* TVOSPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5C1ED62C2151CB00A6DFEA /* TVOSPlayerView.swift */; };
+		2B5C1EDA2C21B4C500A6DFEA /* TVOSActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5C1ED92C21B4C500A6DFEA /* TVOSActionSheet.swift */; };
+		2B5C1EDC2C21B4F200A6DFEA /* TVOSActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B5C1EDB2C21B4F200A6DFEA /* TVOSActionSheet.m */; };
 		2B79A7162C1C369700DE3BD6 /* Alist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A7032C1C369700DE3BD6 /* Alist.swift */; };
 		2B79A7172C1C369700DE3BD6 /* Alist.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A7042C1C369700DE3BD6 /* Alist.m */; };
 		2B79A7182C1C369700DE3BD6 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A7062C1C369700DE3BD6 /* AudioPlayer.swift */; };
@@ -52,6 +54,8 @@
 		2B5C1E9C2C2091B500A6DFEA /* VideoPlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerViewController.swift; sourceTree = "<group>"; };
 		2B5C1ED02C21244300A6DFEA /* AudioPlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerViewController.swift; sourceTree = "<group>"; };
 		2B5C1ED62C2151CB00A6DFEA /* TVOSPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVOSPlayerView.swift; sourceTree = "<group>"; };
+		2B5C1ED92C21B4C500A6DFEA /* TVOSActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVOSActionSheet.swift; sourceTree = "<group>"; };
+		2B5C1EDB2C21B4F200A6DFEA /* TVOSActionSheet.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TVOSActionSheet.m; sourceTree = "<group>"; };
 		2B79A7032C1C369700DE3BD6 /* Alist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alist.swift; sourceTree = "<group>"; };
 		2B79A7042C1C369700DE3BD6 /* Alist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Alist.m; sourceTree = "<group>"; };
 		2B79A7062C1C369700DE3BD6 /* AudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
@@ -117,9 +121,19 @@
 			name = alist;
 			sourceTree = "<group>";
 		};
+		2B5C1ED82C21B4B800A6DFEA /* TVOSActionSheet */ = {
+			isa = PBXGroup;
+			children = (
+				2B5C1ED92C21B4C500A6DFEA /* TVOSActionSheet.swift */,
+				2B5C1EDB2C21B4F200A6DFEA /* TVOSActionSheet.m */,
+			);
+			path = TVOSActionSheet;
+			sourceTree = "<group>";
+		};
 		2B79A7012C1C369700DE3BD6 /* native */ = {
 			isa = PBXGroup;
 			children = (
+				2B5C1ED82C21B4B800A6DFEA /* TVOSActionSheet */,
 				2B79A7022C1C369700DE3BD6 /* Alistlib */,
 				2B79A7052C1C369700DE3BD6 /* VideoPlayer */,
 				2B79A70F2C1C369700DE3BD6 /* BGRunManager */,
@@ -534,12 +548,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B79A71D2C1C369700DE3BD6 /* AudioView.swift in Sources */,
+				2B5C1EDA2C21B4C500A6DFEA /* TVOSActionSheet.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				2B5C1E9D2C2091B500A6DFEA /* VideoPlayerViewController.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				2B79A7212C1C369700DE3BD6 /* HCKeepBGRunManager.m in Sources */,
 				2B79A7162C1C369700DE3BD6 /* Alist.swift in Sources */,
 				2B79A71E2C1C369700DE3BD6 /* PlayerViewInstance.swift in Sources */,
+				2B5C1EDC2C21B4F200A6DFEA /* TVOSActionSheet.m in Sources */,
 				2B79A7172C1C369700DE3BD6 /* Alist.m in Sources */,
 				2B79A71B2C1C369700DE3BD6 /* VideoPlayer.m in Sources */,
 				2B79A7192C1C369700DE3BD6 /* VideoView.swift in Sources */,

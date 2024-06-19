@@ -22,17 +22,25 @@ import AudioImage from "@/assets/images/audio.png";
 import FileImage from "@/assets/images/file.png";
 import {router, useFocusEffect, useLocalSearchParams, useNavigation, usePathname} from "expo-router";
 import axios from 'axios'
-import {Feather, MaterialIcons} from "@expo/vector-icons";
 import {useAppSelector} from "@/app/store";
-import Toast from 'react-native-root-toast';
-import noDataImage from "@/assets/images/无服务.png";
 import NoData from "@/components/NoData";
 import Text from '@/components/ColorSchemeText'
-import {useTextStyles} from "@/hooks/useTextStyles";
 import {useScale} from "@/hooks/useScale";
+import {VideoPlayer} from "@/app/store/setting";
+import useToast from "@/hooks/useToast";
 
-const {Alist, VideoPlayer, AudioPlayer} = NativeModules
+const {Alist, VideoPlayer: VideoPlayerModule, AudioPlayer} = NativeModules
 TVEventControl.enableTVMenuKey()
+
+export enum ObjType {
+  UNKNOWN,
+  FOLDER,
+  // OFFICE,
+  VIDEO,
+  AUDIO,
+  TEXT,
+  IMAGE,
+}
 
 interface FileItem {
   name: string;
@@ -41,7 +49,7 @@ interface FileItem {
   modified: string;
   sign: string;
   thumb: string;
-  type: number;
+  type: ObjType;
   raw_url: string;
   readme: string;
   provider: string;
@@ -49,6 +57,30 @@ interface FileItem {
   hashinfo: string;
   header: string;
 }
+
+export const players: { key: string; name: string; scheme: string }[] = [
+  { key: "vlc", name: "VLC", scheme: "vlc://$durl" },
+  {
+    key: "infuse",
+    name: "Infuse",
+    scheme: "infuse://x-callback-url/play?url=$durl",
+  },
+  {
+    key: "fileball",
+    name: "Fileball",
+    scheme: "filebox://play?url=$edurl",
+  },
+  {
+    key: "vidhub",
+    name: "VidHub",
+    scheme: "open-vidhub://x-callback-url/open?url=$edurl",
+  },
+  {
+    key: "yybx",
+    name: "yybx",
+    scheme: "yybx://play?$durl",
+  },
+]
 
 const UA_CHROME = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'
 
@@ -71,16 +103,6 @@ http.interceptors.response.use(function (response) {
 
 let token = ''
 
-function isSupportVideoFile (filename: string) {
-  const format = filename.split('.').slice(-1)[0]
-  return ['mp4', 'flv', 'm3u8', 'mkv', 'avi', 'mov', 'wmv', 'rm', 'rmvb', '3gp', 'm4v', 'dat', 'vob', 'mpeg', 'dv', 'mod'].includes(format.toLowerCase())
-}
-
-function isSupportAudioFile (filename: string) {
-  const format = filename.split('.').slice(-1)[0]
-  return ['mp3', 'flac', 'ogg', 'm4a', 'wav', 'opus', 'wma', 'ape'].includes(format.toLowerCase())
-}
-
 function formatBytes(bytes: number)  {
   if (bytes === 0) return "0 Bytes";
 
@@ -95,6 +117,8 @@ function RenderItem({item, index}: {item: FileItem; index: number;}) {
   const {path} = useLocalSearchParams() as { path: string };
   const scale = useScale()
   const colorScheme = useColorScheme()
+  const toast = useToast()
+  const videoPlayer = useAppSelector(state => state.setting.videoPlayer || VideoPlayer.Default)
   const [focused, setFocused] = useState(false);
   const [loading, setLoading] = useState(false)
 
@@ -119,19 +143,17 @@ function RenderItem({item, index}: {item: FileItem; index: number;}) {
       } else {
         header['User-Agent'] = UA_CHROME
       }
-      if (isSupportVideoFile(filename)) {
-        VideoPlayer.play(data.raw_url, header)
-      } else if (isSupportAudioFile(filename)) {
+      if (item.type === ObjType.VIDEO) {
+        VideoPlayerModule.play(data.raw_url, header)
+      } else if (item.type === ObjType.AUDIO) {
         AudioPlayer.play(data.raw_url, header)
       }
     } catch (e: any) {
       console.warn(e)
-      Toast.show(e?.data?.message || '加载失败', {
-        position: Toast.positions.CENTER,
-      })
+      toast(e?.data?.message || '加载失败')
     }
     setLoading(false)
-  }, [path])
+  }, [path, toast, item])
 
   const handleFileItem = useCallback(() => {
     if (loading) return
@@ -140,17 +162,25 @@ function RenderItem({item, index}: {item: FileItem; index: number;}) {
       console.log('goToDirectoryDetail', targetPath)
       router.push(`/files?path=${encodeURIComponent(targetPath)}`)
     } else {
-      if (isSupportVideoFile(item.name)) {
-        play(item.name)
-      } else if (isSupportAudioFile(item.name)) {
+      if (item.type === ObjType.VIDEO) {
+        if (videoPlayer !== VideoPlayer.Default) {
+          const playerItem = players.find(player => player.key === videoPlayer)
+          const videoUrl = `http://127.0.0.1:5244/d${path}/${item.name}?sign=${item.sign}`
+          const url = playerItem?.scheme?.replace('$durl', videoUrl)?.replace('$edurl', encodeURIComponent(videoUrl)) ?? ''
+          Linking.openURL(url)
+            .catch(() => {
+              toast(`无法拉起${playerItem?.name}，请确认是否安装`)
+            })
+        } else {
+          play(item.name)
+        }
+      } else if (item.type === ObjType.AUDIO) {
         play(item.name)
       } else {
-        Toast.show('暂不支持此文件格式', {
-          position: Toast.positions.CENTER,
-        })
+        toast('暂不支持此文件格式')
       }
     }
-  }, [item, loading])
+  }, [item, loading, videoPlayer, toast, path])
 
   return (
     <Pressable
@@ -169,7 +199,7 @@ function RenderItem({item, index}: {item: FileItem; index: number;}) {
             </View>
           ) : (
             <Image
-              source={item.is_dir ? DirectoryImage : isSupportVideoFile(item.name) ? VideoImage : isSupportAudioFile(item.name) ? AudioImage : FileImage}
+              source={item.is_dir ? DirectoryImage : item.type === ObjType.VIDEO ? VideoImage : item.type === ObjType.AUDIO ? AudioImage : FileImage}
               style={styles.image}
             />
           )}
@@ -195,6 +225,7 @@ export default function Files() {
   const navigation = useNavigation();
   const pathname = usePathname();
   const {path} = useLocalSearchParams() as { path: string };
+  const toast = useToast()
   const isRunning = useAppSelector(state => state.server.isRunning)
   const scale = useScale()
   const [items, setItems] = useState<FileItem[]>([])
@@ -249,16 +280,7 @@ export default function Files() {
       }
       readyForExit = true
       TVEventControl.disableTVMenuKey()
-      Toast.show('再按一次退出App', {
-        containerStyle: {
-          paddingHorizontal: 24 * scale,
-          paddingVertical: 12 * scale,
-        },
-        textStyle: {
-          fontSize: 16 * scale
-        },
-        duration: 1000
-      })
+      toast('再按一次退出App')
       setTimeout(() => {
         readyForExit = false
         TVEventControl.enableTVMenuKey()
@@ -270,7 +292,7 @@ export default function Files() {
     return () => {
       BackHandler.removeEventListener('hardwareBackPress', cb)
     }
-  }, [path, pathname]);
+  }, [path, pathname, toast]);
 
   return isRunning ? errorMsg ? (
     <TVFocusGuideView style={styles.errorMsgView} autoFocus={true}>

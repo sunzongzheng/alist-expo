@@ -7,7 +7,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import React, {useCallback, useEffect, useState} from "react";
 import {FontAwesome} from "@expo/vector-icons";
 import {useAppDispatch, useAppSelector} from "@/app/store";
-import {setBackgroundMode} from "@/app/store/setting";
+import {setBackgroundMode, setVideoPlayer, VideoPlayer} from "@/app/store/setting";
 import ColorSchemeCard from "@/components/ColorSchemeCard";
 import Text from '@/components/ColorSchemeText'
 import {useTextStyles} from "@/hooks/useTextStyles";
@@ -15,11 +15,23 @@ import CardItem from '@/components/CardItem.tv'
 import {router} from "expo-router";
 import {useScale} from "@/hooks/useScale";
 
-const {AppInfo} = NativeModules;
+const {AppInfo, TVOSActionSheet} = NativeModules;
+
+const VideoPlayerTextMap = {
+  [VideoPlayer.Default]: '默认',
+  [VideoPlayer.VLC]: 'VLC',
+  [VideoPlayer.Infuse]: 'Infuse',
+  [VideoPlayer.Fileball]: 'Fileball',
+  [VideoPlayer.VidHub]: 'VidHub',
+}
+
+const videoPlayerKeys = [VideoPlayer.Default, VideoPlayer.VLC, VideoPlayer.Infuse, VideoPlayer.Fileball, VideoPlayer.VidHub]
+const videoPlayerKeyTexts = videoPlayerKeys.map(item => VideoPlayerTextMap[item])
 
 export default function Setting() {
   const [version, setVersion] = useState('1.0')
   const backgroundMode = useAppSelector(state => state.setting.backgroundMode)
+  const videoPlayer = useAppSelector(state => state.setting.videoPlayer || VideoPlayer.Default)
   const dispatch = useAppDispatch()
   const textStyles = useTextStyles();
   const colorScheme = useColorScheme()
@@ -33,6 +45,18 @@ export default function Setting() {
       console.error(error);
     }
   }, []);
+
+  const showVideoPlayers = useCallback(() => {
+    TVOSActionSheet.showActionSheetWithOptions(
+      {
+        options: videoPlayerKeyTexts,
+        activeIndex: videoPlayerKeys.findIndex(item => item === videoPlayer),
+      },
+      (buttonIndex: number) => {
+        dispatch(setVideoPlayer(videoPlayerKeys[buttonIndex]))
+      },
+    );
+  }, [videoPlayer, dispatch, setVideoPlayer])
 
   useEffect(() => {
     getAppVersion()
@@ -55,6 +79,20 @@ export default function Setting() {
                     style={[styles.itemDescription, {fontSize: 14 * scale, color}]}>开启后服务常驻后台，息屏也可访问服务</Text>
                 </View>
                 <Text>{backgroundMode ? '点击关闭' : '点击开启'}</Text>
+              </>
+            )
+          }}
+        />
+        <CardItem
+          style={styles.cardItem}
+          onPress={showVideoPlayers}
+          childrenNodes={() => {
+            return (
+              <>
+                <View>
+                  <Text style={styles.itemTitle}>视频播放器</Text>
+                </View>
+                <Text>{VideoPlayerTextMap[videoPlayer]}</Text>
               </>
             )
           }}
