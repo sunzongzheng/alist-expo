@@ -112,7 +112,7 @@ const AListWebview = forwardRef((props: AListWebViewProps, forwardedRef: Forward
   return isRunning ? injectedJS ? (
       <WebView
         source={{ uri: url }}
-        style={{ flex: 1 }}
+        style={{ flex: 1, backgroundColor: 'transparent' }}
         ref={webviewRef}
         injectedJavaScriptBeforeContentLoaded={injectedJS}
         webviewDebuggingEnabled={true}
@@ -138,6 +138,8 @@ const AListWebview = forwardRef((props: AListWebViewProps, forwardedRef: Forward
           Linking.openURL(downloadUrl)
         }}
         onContentProcessDidTerminate={() => webviewRef.current?.reload()}
+        startInLoadingState={true}
+        renderLoading={() => <View/>}
       />
     ) : (
       <View style={{alignItems: 'center', justifyContent: 'center', flex: 1,}}>
