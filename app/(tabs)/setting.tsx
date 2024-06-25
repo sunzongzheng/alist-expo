@@ -10,17 +10,18 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import React, {useCallback, useEffect, useState} from "react";
 import {FontAwesome} from "@expo/vector-icons";
 import {useAppDispatch, useAppSelector} from "@/app/store";
-import {setBackgroundMode} from "@/app/store/setting";
+import {setAutoRun, setBackgroundMode} from "@/app/store/setting";
 import ColorSchemeCard from "@/components/ColorSchemeCard";
 import Text from '@/components/ColorSchemeText'
 import {Colors} from "@/constants/Colors";
 
-const { AppInfo } = NativeModules;
+const { AppInfo, NotificationManager } = NativeModules;
 
 export default function Setting() {
   const [modalVisible, setModalVisible] = useState(false);
   const [version, setVersion] = useState('1.0')
   const backgroundMode = useAppSelector(state => state.setting.backgroundMode)
+  const autoRun = useAppSelector(state => state.setting.autoRun)
   const dispatch = useAppDispatch()
   const colorScheme = useColorScheme()
 
@@ -57,6 +58,23 @@ export default function Setting() {
               dispatch(setBackgroundMode(value))
             }}
             value={backgroundMode}
+          />
+        </View>
+        <View style={[styles.cardItem, styles.cardItemLarge]}>
+          <View>
+            <Text style={styles.itemTitle}>自动运行</Text>
+            <Text style={styles.itemDescription}>App冷启动时自动启动服务</Text>
+          </View>
+          <Switch
+              trackColor={{false: '#767577', true: '#81b0ff'}}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={(value) => {
+                if (value) {
+                  NotificationManager.requestAuthorization()
+                }
+                dispatch(setAutoRun(value))
+              }}
+              value={autoRun}
           />
         </View>
       </ColorSchemeCard>

@@ -25,6 +25,8 @@
 		2B79A6FD2C1C2A9F00DE3BD6 /* jm.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2B79A6EB2C1C2A9F00DE3BD6 /* jm.mp3 */; };
 		2B79A6FF2C1C2A9F00DE3BD6 /* AppInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A6EE2C1C2A9F00DE3BD6 /* AppInfo.swift */; };
 		2B79A7002C1C2A9F00DE3BD6 /* AppInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A6EF2C1C2A9F00DE3BD6 /* AppInfo.m */; };
+		2B7CF7F72C2A55D100C2BB7E /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7CF7F62C2A55D100C2BB7E /* NotificationManager.swift */; };
+		2B7CF7FA2C2A636200C2BB7E /* NotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B7CF7F92C2A636200C2BB7E /* NotificationManager.m */; };
 		2B82A2612BF5EFA500E4F0F5 /* Alistlib.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B82A2602BF5EFA500E4F0F5 /* Alistlib.xcframework */; };
 		2BBEDA5A2BF7A40D00A07CF1 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BBEDA582BF7A40D00A07CF1 /* libresolv.tbd */; };
 		2BBEDA5B2BF7A40D00A07CF1 /* libresolv.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BBEDA592BF7A40D00A07CF1 /* libresolv.9.tbd */; };
@@ -57,6 +59,8 @@
 		2B79A6EB2C1C2A9F00DE3BD6 /* jm.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = jm.mp3; sourceTree = "<group>"; };
 		2B79A6EE2C1C2A9F00DE3BD6 /* AppInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppInfo.swift; sourceTree = "<group>"; };
 		2B79A6EF2C1C2A9F00DE3BD6 /* AppInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppInfo.m; sourceTree = "<group>"; };
+		2B7CF7F62C2A55D100C2BB7E /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		2B7CF7F92C2A636200C2BB7E /* NotificationManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationManager.m; sourceTree = "<group>"; };
 		2B82A2602BF5EFA500E4F0F5 /* Alistlib.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Alistlib.xcframework; path = alist/Alistlib.xcframework; sourceTree = "<group>"; };
 		2BBEDA582BF7A40D00A07CF1 /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 		2BBEDA592BF7A40D00A07CF1 /* libresolv.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.9.tbd; path = usr/lib/libresolv.9.tbd; sourceTree = SDKROOT; };
@@ -106,6 +110,7 @@
 		2B79A6DA2C1C2A9F00DE3BD6 /* native */ = {
 			isa = PBXGroup;
 			children = (
+				2B7CF7F82C2A61CC00C2BB7E /* NotificationManager */,
 				2B79A6DB2C1C2A9F00DE3BD6 /* Alistlib */,
 				2B79A6DE2C1C2A9F00DE3BD6 /* VideoPlayer */,
 				2B79A6E82C1C2A9F00DE3BD6 /* BGRunManager */,
@@ -157,6 +162,15 @@
 				2B79A6EF2C1C2A9F00DE3BD6 /* AppInfo.m */,
 			);
 			path = AppInfo;
+			sourceTree = "<group>";
+		};
+		2B7CF7F82C2A61CC00C2BB7E /* NotificationManager */ = {
+			isa = PBXGroup;
+			children = (
+				2B7CF7F62C2A55D100C2BB7E /* NotificationManager.swift */,
+				2B7CF7F92C2A636200C2BB7E /* NotificationManager.m */,
+			);
+			path = NotificationManager;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
@@ -529,8 +543,10 @@
 				B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */,
 				2B79A7002C1C2A9F00DE3BD6 /* AppInfo.m in Sources */,
 				2B79A6FC2C1C2A9F00DE3BD6 /* HCKeepBGRunManager.swift in Sources */,
+				2B7CF7FA2C2A636200C2BB7E /* NotificationManager.m in Sources */,
 				2B79A6FB2C1C2A9F00DE3BD6 /* HCKeepBGRunManager.m in Sources */,
 				2B79A6F92C1C2A9F00DE3BD6 /* AudioPlayer.m in Sources */,
+				2B7CF7F72C2A55D100C2BB7E /* NotificationManager.swift in Sources */,
 				5D90CC3DA36D41CA86945CB5 /* noop-file.swift in Sources */,
 				2B79A6FF2C1C2A9F00DE3BD6 /* AppInfo.swift in Sources */,
 				2B79A6F02C1C2A9F00DE3BD6 /* Alist.swift in Sources */,

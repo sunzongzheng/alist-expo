@@ -91,6 +91,7 @@ class Alist: RCTEventEmitter {
     AlistlibShutdown(0, &error)
 
     if (error == nil) {
+      NotificationManager.shared.removeNotification()
       resolve("ok")
     } else {
       reject("server stop", "服务停止失败", error)

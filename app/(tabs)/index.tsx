@@ -19,11 +19,12 @@ import Toast from "react-native-root-toast";
 import Text from '@/components/ColorSchemeText'
 import ColorSchemeCard from "@/components/ColorSchemeCard";
 
-const {Alist} = NativeModules;
+const {Alist, NotificationManager} = NativeModules;
 const DEFAULT_PASSWORD = 'admin'
 
 export default function HomeScreen() {
   const isRunning = useAppSelector(state => state.server.isRunning)
+  const autoRun = useAppSelector(state => state.setting.autoRun)
   const dispatch = useAppDispatch()
   const [adminPwd, setAdminPwd] = useState('')
   const [adminUsername, setAdminUsername] = useState('')
@@ -91,6 +92,18 @@ export default function HomeScreen() {
       // @ts-ignore
       setIP(state.details?.ipAddress)
     });
+  }, []);
+
+  useEffect(() => {
+    if (autoRun) {
+      Alist.isRunning().then((isRunning: boolean) => {
+        if (!isRunning) {
+          // 自动启动
+          start()
+          NotificationManager.scheduleNotification("AListServer", "服务正在运行中")
+        }
+      })
+    }
   }, []);
 
   return (

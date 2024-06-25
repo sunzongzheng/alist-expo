@@ -8,9 +8,6 @@ class AppDelegate: EXAppDelegateWrapper {
         self.moduleName = "main"
         self.initialProps = [String: Any]();
       
-        NotificationCenter.default.addObserver(self, selector: #selector(handleApplicationDidEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(handleApplicationWillEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
-      
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
 
@@ -51,13 +48,7 @@ class AppDelegate: EXAppDelegateWrapper {
         return PlayerViewInstance.supportedInterfaceOrientations
     }
   
-    @objc private func handleApplicationDidEnterBackground() {
-    }
-
-    @objc private func handleApplicationWillEnterForeground() {
-    }
-    
     override func applicationWillTerminate(_ application: UIApplication) {
-        NotificationCenter.default.removeObserver(self)
+        NotificationManager.shared.removeNotification()
     }
 }
