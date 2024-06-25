@@ -140,6 +140,7 @@ const AListWebview = forwardRef((props: AListWebViewProps, forwardedRef: Forward
         onContentProcessDidTerminate={() => webviewRef.current?.reload()}
         startInLoadingState={true}
         renderLoading={() => <View/>}
+        setBuiltInZoomControls={false}
       />
     ) : (
       <View style={{alignItems: 'center', justifyContent: 'center', flex: 1,}}>
